@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "radio",
     "saved",
-    "seach",
-    "wsgi",
+    "search",
+    "users",
 ]
 
 MIDDLEWARE = [
