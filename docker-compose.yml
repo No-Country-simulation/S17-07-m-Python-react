@@ -31,6 +31,15 @@ services:
       - POSTGRES_USER=myuser
       - POSTGRES_PASSWORD=mypassword
 
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:80"
+    networks:
+      - mynetwork
+
 networks:
   mynetwork:
 
