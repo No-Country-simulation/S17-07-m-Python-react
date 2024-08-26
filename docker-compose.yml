@@ -1,0 +1,38 @@
+services:
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      DB_HOST: db
+      DB_PORT: 5432
+    networks:
+      - mynetwork
+
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./server:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+    environment:
+      - DATABASE_URL=postgres://myuser:mypassword@db:5432/mydatabase
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword
+
+networks:
+  mynetwork:
+
+volumes:
+  postgres_data:
