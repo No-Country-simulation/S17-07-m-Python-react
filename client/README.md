@@ -126,6 +126,12 @@ Structure based on modular architecture
                     └── 📁hooks
                     └── 📁pages
                     └── 📁services
+                └── 📁recommendation
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
                 └── 📁search
                     └── 📁components
                     └── 📁helpers
