@@ -16,7 +16,8 @@
     "@mui/material": "^5.16.7",
     "music-player": "file:",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.1"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.25.1",

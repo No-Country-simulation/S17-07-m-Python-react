@@ -86,3 +86,73 @@ Run this command to automatically fix linting issues:
 ```
 pnpm run lint --fix
 ```
+
+## Architecture
+
+Structure based on modular architecture
+
+```
+└── 📁src
+    └── 📁core
+        └── 📁assets
+        └── 📁layouts
+        └── 📁routes
+        └── 📁services
+        └── 📁themes
+        └── 📁utils
+    └── 📁modules
+        └── 📁dashboard
+            └── 📁components
+            └── 📁helpers
+            └── 📁hooks
+            └── 📁pages
+            └── 📁services
+            └── 📁submodules
+                └── 📁library
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
+                └── 📁player
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
+                └── 📁playlists
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
+                └── 📁search
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
+        └── 📁start
+            └── 📁components
+            └── 📁helpers
+            └── 📁hooks
+            └── 📁pages
+            └── 📁services
+            └── 📁submodules
+                └── 📁auth
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
+                └── 📁home
+                    └── 📁components
+                    └── 📁helpers
+                    └── 📁hooks
+                    └── 📁pages
+                    └── 📁services
+    └── App.css
+    └── App.jsx
+    └── index.css
+    └── main.jsx
+```
