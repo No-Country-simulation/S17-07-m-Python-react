@@ -1,6 +1,18 @@
-# React + Vite
+# S17-07-m-Python-react Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This template provides a minimal setup to build a music player using React and Vite, with Hot Module Replacement (HMR) and some ESLint rules.
+
+## Package Manager
+
+This project uses [pnpm](https://pnpm.io/), a fast, disk space-efficient package manager. You can install dependencies and manage scripts as follows:
+
+- To install dependencies: `pnpm install`
+- To start the development server: `pnpm run dev`
+- To build the project: `pnpm run build`
+
+For more information on pnpm, you can check out the [pnpm documentation](https://pnpm.io/motivation).
+
+## React + Vite
 
 Currently, two official plugins are available:
 
@@ -64,7 +76,7 @@ Make sure your `.vscode/settings.json` includes the following settings to apply 
 Run the following command to check for linting issues:
 
 ```
-npm run lint
+pnpm run lint
 ```
 
 ### Auto-Fix Linting Issues
@@ -72,5 +84,5 @@ npm run lint
 Run this command to automatically fix linting issues:
 
 ```
-npm run lint --fix
+pnpm run lint --fix
 ```
