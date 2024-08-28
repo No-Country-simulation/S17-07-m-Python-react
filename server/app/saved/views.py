@@ -29,3 +29,31 @@ class CreatePlaylist(View):
             return JsonResponse({'error': e.message_dict}, status=400)
         
         return JsonResponse({'status': 'success'}, status=201)
+    
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class GetPlaylist(View):
+    
+    @jwt_required
+    def get(self, request, *args, **kwargs):
+        playlist_id = kwargs.get('playlist_id', None)
+        
+        if playlist_id:
+            playlist = PlaylistUser.objects.filter(user=request.user, pk=playlist_id).first()
+            if not playlist:
+                return JsonResponse({'error': "playlist not found"}, status=404)
+            playlist_data = {
+                "name": playlist.name
+            }
+            return JsonResponse({'playlist': playlist_data}, status=200)
+        
+        playlists = PlaylistUser.objects.filter(user=request.user)
+        playlists_data = []
+        
+        for playlist in playlists:
+            playlists_data.append({
+                "name": playlist.name
+            })
+        
+        return JsonResponse({'playlists': playlists_data}, status=200)
+            
