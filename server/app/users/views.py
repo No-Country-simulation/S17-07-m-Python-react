@@ -1,5 +1,6 @@
+import json
+from django.contrib.auth import authenticate, login
 from django.forms import BaseModelForm
-from django.shortcuts import render
 from django.views import View
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -25,3 +26,19 @@ class Register(CreateView):
     
     def form_invalid(self, form: BaseModelForm) -> HttpResponse:
         return super().form_invalid(form)
+    
+    
+@method_decorator(csrf_exempt, name='dispatch')
+class Login(View):
+
+    def post(self, request):
+        body = json.loads(request.body)
+        username = body.get('username')
+        password = body.get('password')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return JsonResponse({'message': 'Login successful'}, status=200)
+        else:
+            return JsonResponse({'error': 'Invalid credentials'}, status=400)
