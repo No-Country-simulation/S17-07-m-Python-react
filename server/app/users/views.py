@@ -11,7 +11,7 @@ from .models import Users
 
 @method_decorator(csrf_exempt, name="dispatch")
 class Register(CreateView):
-    models = Users
+    model = Users
     fields = ["username", "email", "password"]
     
     def form_valid(self, form):
