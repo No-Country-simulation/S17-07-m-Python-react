@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from users.utils.decorators import jwt_required
+from .utils.playlist import generate_info_dict
 from .models import PlaylistSongs, PlaylistUser
 import json
 
@@ -40,20 +41,17 @@ class GetPlaylist(View):
         
         if playlist_id:
             playlist = PlaylistUser.objects.filter(user=request.user, pk=playlist_id).first()
+            
             if not playlist:
                 return JsonResponse({'error': "playlist not found"}, status=404)
-            playlist_data = {
-                "name": playlist.name
-            }
-            return JsonResponse({'playlist': playlist_data}, status=200)
+            
+            return JsonResponse({'playlist': generate_info_dict(playlist)}, status=200)
         
         playlists = PlaylistUser.objects.filter(user=request.user)
         playlists_data = []
         
         for playlist in playlists:
-            playlists_data.append({
-                "name": playlist.name
-            })
+            playlists_data.append(generate_info_dict(playlist))
         
         return JsonResponse({'playlists': playlists_data}, status=200)
     
@@ -87,11 +85,6 @@ class UpdatePlaylistProperties(View):
         except ValidationError as e:
             return JsonResponse({'error': e.message_dict}, status=400)
         
-        # Formats the data to return
-        playlists_data = {
-            "name": playlist.name,
-            "id": playlist.pk
-        }
         
-        return JsonResponse({'status': 'succes',"playlist":playlists_data}, status=200)
+        return JsonResponse({'status': 'succes',"playlist":generate_info_dict(playlist)}, status=200)
         
