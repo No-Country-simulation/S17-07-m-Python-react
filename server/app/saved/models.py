@@ -7,8 +7,14 @@ class PlaylistUser(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, validators=[MinLengthValidator(5)])
     
+    def __str__(self):
+        return self.name
+    
     
 class PlaylistSongs(models.Model):
     playlist = models.ForeignKey(PlaylistUser, on_delete=models.CASCADE)
     song_id = models.PositiveIntegerField()
     order  = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.song_id
