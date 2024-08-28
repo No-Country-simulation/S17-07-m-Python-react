@@ -6,4 +6,5 @@ urlpatterns = [
     path('playlist/get/', GetPlaylist.as_view(), name='get_playlists'),
     path('playlist/get/<int:playlist_id>', GetPlaylist.as_view(), name='get_playlist_by_id'),
     path('playlist/update/<int:playlist_id>', UpdatePlaylistProperties.as_view(), name='update_playlist'),
+    path('playlist/delete/<int:playlist_id>', DeletePlaylist.as_view(), name='delete_playlist'),
 ]

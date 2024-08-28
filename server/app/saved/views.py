@@ -124,3 +124,21 @@ class UpdatePlaylistProperties(View):
         
         
         return JsonResponse({'status': 'succes',"playlist":generate_info_dict(playlist)}, status=200)
+    
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class DeletePlaylist(View):
+    
+    @jwt_required
+    def delete(self, request, *args, **kwargs):
+        playlist_id = kwargs.get('playlist_id', None)
+        
+        # Gets the playlist
+        playlist = PlaylistUser.objects.filter(user=request.user, pk=playlist_id).first()
+        if not playlist:
+            return JsonResponse({'error': "playlist not found"}, status=404)
+        
+        # Deletes the playlist
+        playlist.delete()
+        
+        return JsonResponse({'status': 'succes'}, status=200)
