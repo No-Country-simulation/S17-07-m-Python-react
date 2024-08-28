@@ -87,4 +87,40 @@ class UpdatePlaylistProperties(View):
         
         
         return JsonResponse({'status': 'succes',"playlist":generate_info_dict(playlist)}, status=200)
+    
+    
+    @jwt_required
+    def put(self, request, *args, **kwargs):
+        playlist_id = kwargs.get('playlist_id', None)
         
+        # Gets the playlist
+        playlist = PlaylistUser.objects.filter(user=request.user, pk=playlist_id).first()
+        if not playlist:
+            return JsonResponse({'error': "playlist not found"}, status=404)
+        
+        # Checks if there is a json
+        try:
+            body = json.loads(request.body)
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({'error': 'JSON required'}, status=400)
+        
+        # Checks missing fields
+        required_fields = ['name']
+        missing_fields = [field for field in required_fields if field not in body]
+        
+        if missing_fields:
+            return JsonResponse({'error': f'Missing fields: {", ".join(missing_fields)}'}, status=400)
+        
+        # Applies the changes
+        for field in required_fields:
+            setattr(playlist, field, body.get(field))
+            
+        # Saves the changes
+        try:
+            playlist.full_clean()
+            playlist.save()
+        except ValidationError as e:
+            return JsonResponse({'error': e.message_dict}, status=400)
+        
+        
+        return JsonResponse({'status': 'succes',"playlist":generate_info_dict(playlist)}, status=200)
