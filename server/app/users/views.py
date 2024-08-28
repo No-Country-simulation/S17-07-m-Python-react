@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.edit import CreateView
 from django.http import HttpResponse, JsonResponse
+from users.utils.token import generate_jwt
 from .models import Users
 
 # Create your views here.
@@ -38,7 +39,7 @@ class Login(View):
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request, user)
-            return JsonResponse({'message': 'Login successful'}, status=200)
+            token = generate_jwt(user)
+            return JsonResponse({'token': token}, status=200)
         else:
             return JsonResponse({'error': 'Invalid credentials'}, status=400)
