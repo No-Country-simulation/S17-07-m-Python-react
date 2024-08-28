@@ -6,6 +6,7 @@ from django.core.validators import MinLengthValidator
 class PlaylistUser(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, validators=[MinLengthValidator(5)])
+    song_count = models.PositiveSmallIntegerField(default=0)
     
     def __str__(self):
         return self.name
@@ -17,4 +18,4 @@ class PlaylistSongs(models.Model):
     order  = models.PositiveSmallIntegerField()
 
     def __str__(self):
-        return self.song_id
+        return str(self.song_id)
