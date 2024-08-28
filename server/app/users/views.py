@@ -25,7 +25,7 @@ class Register(CreateView):
         
     
     def form_invalid(self, form: BaseModelForm) -> HttpResponse:
-        return super().form_invalid(form)
+        return JsonResponse({'errors': form.errors}, status=400)
     
     
 @method_decorator(csrf_exempt, name='dispatch')
