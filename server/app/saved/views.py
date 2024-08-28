@@ -142,3 +142,40 @@ class DeletePlaylist(View):
         playlist.delete()
         
         return JsonResponse({'status': 'succes'}, status=200)
+    
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class AddSong(View):
+    @jwt_required
+    def post(self, request, *args, **kwargs):
+        playlist_id = kwargs.get('playlist_id', None)
+        
+        # Gets the playlist
+        playlist = PlaylistUser.objects.filter(user=request.user, pk=playlist_id).first()
+        if not playlist:
+            return JsonResponse({'error': "playlist not found"}, status=404)
+        
+        # Checks if there is a json
+        try:
+            body = json.loads(request.body)
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({'error': 'JSON required'}, status=400)
+        
+        # Gets the songs
+        if not (songs := body.get("songs")):
+            return JsonResponse({'error': 'songs required'}, status=400)
+        
+        # Adds the songs
+        for song in songs:
+            new_song = PlaylistSongs(playlist=playlist, song_id=song, order=playlist.song_count + 1)
+            try:
+                new_song.full_clean()
+                new_song.save()
+                playlist.song_count += 1
+            except ValidationError as e:
+                return JsonResponse({'error': e.message_dict}, status=400)
+            
+        playlist.save()
+        
+        return JsonResponse({'status': 'succes'}, status=200)
+        
