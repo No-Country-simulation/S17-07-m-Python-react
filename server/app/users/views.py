@@ -33,7 +33,10 @@ class Register(CreateView):
 class Login(View):
 
     def post(self, request):
-        body = json.loads(request.body)
+        try:
+            body = json.loads(request.body)
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({'error': 'JSON required'}, status=400)
         username = body.get('username')
         password = body.get('password')
 
