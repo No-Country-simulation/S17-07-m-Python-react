@@ -251,3 +251,43 @@ class GetFavorites(View):
         favorites = list(favorites_queryset.values())
             
         return JsonResponse({'favorites': favorites}, status=200)
+    
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class AddFavorite(View):
+    categories = {
+        "song":1,
+        "album":2,
+        "singer":3
+    }
+    
+    @jwt_required
+    def post(self, request, *args, **kwargs):
+        try:
+            body = json.loads(request.body)
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({'error': 'JSON required'}, status=400)
+
+        category = body.get("category")
+        element_id = body.get("element_id")
+        
+
+        if category not in self.categories:
+            return JsonResponse({'error': f"category {category} not found"}, status=404)
+        
+        try:
+            element_id = int(element_id)
+        except ValueError:
+            return JsonResponse({'error': 'element_id must be an int'}, status=400)
+        except TypeError:
+            return JsonResponse({'error': 'element_id required'}, status=400)
+        
+        favorite = Favorite(category=self.categories[category], user=request.user, element_id=element_id)
+        
+        try:
+            favorite.full_clean()
+            favorite.save()
+        except ValidationError as e:
+            return JsonResponse({'error': e.message_dict}, status=400)
+        
+        return JsonResponse({'status': 'success'}, status=201)
