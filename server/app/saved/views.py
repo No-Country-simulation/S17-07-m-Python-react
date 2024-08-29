@@ -5,10 +5,11 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from users.utils.decorators import jwt_required
 from .utils.playlist import generate_info_dict
-from .models import PlaylistSongs, PlaylistUser
+from .models import PlaylistSongs, PlaylistUser, Favorite
 import json
 
 # Create your views here.
+## Playlists
 @method_decorator(csrf_exempt, name="dispatch")
 class CreatePlaylist(View):
     
@@ -223,3 +224,30 @@ class UpdatePlaylistSongs(View):
         playlist.save()
         
         return JsonResponse({'status': 'succes'}, status=200)
+    
+# ----------------------------------------------------------------------------------------------------
+## Favourites
+
+@method_decorator(csrf_exempt, name="dispatch")
+class GetFavorites(View):
+    categories = {
+        "song":1,
+        "album":2,
+        "singuer":3
+    }
+    
+    @jwt_required
+    def get(self, request, *args, **kwargs):
+        category = kwargs.get('category', None)
+        
+        if category:
+            if category not in self.categories:
+                return JsonResponse({'error': f"category {category} not found"}, status=404)
+            
+            favorites_queryset = Favorite.objects.filter(user=request.user, category=self.categories[category])
+        elif not category:
+            favorites_queryset = Favorite.objects.filter(user=request.user)
+            
+        favorites = list(favorites_queryset.values())
+            
+        return JsonResponse({'favorites': favorites}, status=200)
