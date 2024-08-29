@@ -21,7 +21,7 @@ class PlaylistSongs(models.Model):
         return str(self.song_id)
     
     
-class Favourite(models.Model):
+class Favorite(models.Model):
     OPTIONS = [
         (1, 'song'),
         (2, 'album'),
