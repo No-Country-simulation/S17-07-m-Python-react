@@ -297,6 +297,10 @@ class AddFavorite(View):
         except TypeError:
             return JsonResponse({'error': 'element_id required'}, status=400)
         
+        favorites = set(Favorite.objects.filter(user=request.user).values_list('element_id', flat=True))
+        if element_id in favorites:
+            return JsonResponse({'error': 'element_id is already favorite'}, status=409)
+        
         favorite = Favorite(category=self.categories[category], user=request.user, element_id=element_id)
         
         try:
