@@ -16,7 +16,12 @@ services:
     build:
       context: .
       dockerfile: server/Dockerfile
-    command: python manage.py runserver 0.0.0.0:8000
+    command: >
+      sh -c "
+            python manage.py makemigrations &&
+            python manage.py migrate &&
+            python manage.py createadmin &&
+            python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./server:/app
     ports:
@@ -30,6 +35,10 @@ services:
       - POSTGRES_DB=mydatabase
       - POSTGRES_USER=myuser
       - POSTGRES_PASSWORD=mypassword
+      - ADMIN_USER=admin_user
+      - ADMIN_PASSWORD=secure_password
+      - ADMIN_EMAIL=admin@gmail.com
+      - JWT_SECRET_KEY=h[&?T4}!nT5y+dX.vZ}E-Zg@Nfe&vnwXb&2X8M.Z054_j?[EE3qxd2F}B-i;wpHNF)1iFA-5*{@qc7.4ya3-$SiHL02k$eQqJ+,Zg2yZ8!y&qtdj+eA,=_YCvvhGXE*Enf)gtzcQC{.D&pB?YW1g(a?N2f/Dy+t;V?iTJE}7WnvS4QP$@_e0T]v@Nvq.wYW5AVC.._#2
 
   client:
     build:

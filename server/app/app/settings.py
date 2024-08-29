@@ -11,6 +11,11 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+import datetime
+AUTH_USER_MODEL = 'users.Users'
+
+JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
+JWT_EXPIRATION_DELTA = datetime.timedelta(days=1)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
