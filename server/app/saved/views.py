@@ -1,4 +1,5 @@
 from django.core.exceptions import ValidationError
+from django.db.models import Case, When, Value, CharField
 from django.views import View
 from django.http import JsonResponse
 from django.utils.decorators import method_decorator
@@ -244,9 +245,23 @@ class GetFavorites(View):
             if category not in self.categories:
                 return JsonResponse({'error': f"category {category} not found"}, status=404)
             
-            favorites_queryset = Favorite.objects.filter(user=request.user, category=self.categories[category])
+            favorites_queryset = Favorite.objects.filter(user=request.user, category=self.categories[category]).annotate(
+                category_name=Case(
+                    When(category=1, then=Value('song')),
+                    When(category=2, then=Value('album')),
+                    When(category=3, then=Value('singer')),
+                    output_field=CharField(),
+                )
+            )
         elif not category:
-            favorites_queryset = Favorite.objects.filter(user=request.user)
+            favorites_queryset = Favorite.objects.filter(user=request.user).annotate(
+                category_name=Case(
+                    When(category=1, then=Value('song')),
+                    When(category=2, then=Value('album')),
+                    When(category=3, then=Value('singer')),
+                    output_field=CharField(),
+                )
+            )
             
         favorites = list(favorites_queryset.values())
             
