@@ -233,7 +233,7 @@ class GetFavorites(View):
     categories = {
         "song":1,
         "album":2,
-        "singuer":3
+        "singer":3
     }
     
     @jwt_required

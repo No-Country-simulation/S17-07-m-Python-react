@@ -25,7 +25,7 @@ class Favorite(models.Model):
     OPTIONS = [
         (1, 'song'),
         (2, 'album'),
-        (3, 'singuer'),
+        (3, 'singer'),
     ]
     
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
