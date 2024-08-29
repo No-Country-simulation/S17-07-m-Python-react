@@ -314,8 +314,7 @@ class IsFavorite(View):
     def get(self, request, *args, **kwargs):
         element_id = kwargs.get('element_id', None)
         
-        favorite = Favorite.objects.filter(user=request.user, element_id=element_id).first()
-        if favorite:
+        if Favorite.objects.filter(user=request.user, element_id=element_id).exists():
             return JsonResponse({'exists': True}, status=200)
         else:
             return JsonResponse({'exists': False}, status=200)
