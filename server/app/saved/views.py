@@ -291,3 +291,18 @@ class AddFavorite(View):
             return JsonResponse({'error': e.message_dict}, status=400)
         
         return JsonResponse({'status': 'success'}, status=201)
+    
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class DeleteFavorite(View):
+    @jwt_required
+    def delete(self, request, *args, **kwargs):
+        favorite_id = kwargs.get('favorite_id', None)
+
+        favorite = Favorite.objects.filter(user=request.user, pk=favorite_id).first()
+        if not favorite:
+            return JsonResponse({'error': "favorite not found"}, status=404)
+        
+        favorite.delete()
+        
+        return JsonResponse({'status': 'succes'}, status=200)

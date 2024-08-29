@@ -14,4 +14,5 @@ urlpatterns = [
     path('favorite/get/', GetFavorites.as_view(), name='get_favorites'),
     path('favorite/get/<str:category>', GetFavorites.as_view(), name='get_favorites_by_category'),
     path('favorite/create', AddFavorite.as_view(), name='add_favorite'),
+    path('favorite/delete/<int:favorite_id>', DeleteFavorite.as_view(), name='delete_favorite'),
 ]
