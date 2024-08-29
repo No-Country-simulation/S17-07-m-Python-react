@@ -173,6 +173,7 @@ class AddSong(View):
                 new_song.save()
                 playlist.song_count += 1
             except ValidationError as e:
+                playlist.save()
                 return JsonResponse({'error': e.message_dict}, status=400)
             
         playlist.save()
