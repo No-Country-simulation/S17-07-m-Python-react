@@ -306,3 +306,17 @@ class DeleteFavorite(View):
         favorite.delete()
         
         return JsonResponse({'status': 'succes'}, status=200)
+    
+    
+@method_decorator(csrf_exempt, name="dispatch")
+class IsFavorite(View):
+    @jwt_required
+    def get(self, request, *args, **kwargs):
+        element_id = kwargs.get('element_id', None)
+        
+        favorite = Favorite.objects.filter(user=request.user, element_id=element_id).first()
+        if favorite:
+            return JsonResponse({'exists': True}, status=200)
+        else:
+            return JsonResponse({'exists': False}, status=200)
+        
