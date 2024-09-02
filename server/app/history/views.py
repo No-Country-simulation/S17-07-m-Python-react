@@ -44,3 +44,15 @@ class HistoryView(View):
         
         # response
         return JsonResponse({'status': 'succes'}, status=200)
+    
+    
+    @jwt_required
+    def get(self, request, *args, **kwargs):
+        # Get the songs
+        songs = History.objects.filter(user=request.user).order_by('order')
+        
+        # Convert it to a list
+        songs = list(songs.values())
+        
+        # Returns it
+        return JsonResponse({'history': songs}, status=200)
