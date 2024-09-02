@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "saved",
     "search",
     "users",
+    "history",
 ]
 
 MIDDLEWARE = [
