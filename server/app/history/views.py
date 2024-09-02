@@ -10,7 +10,7 @@ import json
 
 # Create your views here.
 @method_decorator(csrf_exempt, name="dispatch")
-class AddHistory(View):
+class HistoryView(View):
     
     @jwt_required
     def post(self, request, *args, **kwargs):
