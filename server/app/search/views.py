@@ -23,6 +23,8 @@ class GetSongs(View):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
+            if 'error' in data:
+                return JsonResponse({"error":data['error']['message']}, status=400)
             if data['data']:
                 for song in data["data"]:
                     song["favorite"] = Favorite.objects.filter(user=request.user, element_id=song["id"]).exists()
@@ -54,6 +56,8 @@ class GetElementById(View):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
+            if 'error' in data:
+                return JsonResponse({"error":data['error']['message']}, status=400)
             data["favorite"] = Favorite.objects.filter(user=request.user, element_id=data["id"]).exists()
             return JsonResponse({
                 'data': data
