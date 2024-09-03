@@ -1,11 +1,25 @@
-import { Box, Button, Container, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Snackbar,
+  TextField,
+  Typography,
+  Alert,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { login } from '../services/login';
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [formValues, setFormValues] = useState({ email: '', password: '' });
-  const [errors, setErrors] = useState({ email: '', password: '' });
+  const [formValues, setFormValues] = useState({ username: '', password: '' });
+  const [errors, setErrors] = useState({ username: '', password: '' });
+
+  // Snackbar states
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('info');
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
@@ -18,12 +32,12 @@ export const LoginForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const { email, password } = formValues;
+    const { username, password } = formValues;
     let isValid = true;
-    const newErrors = { email: '', password: '' };
+    const newErrors = { username: '', password: '' };
 
-    if (!email) {
-      newErrors.email = 'Email es requerido';
+    if (!username) {
+      newErrors.username = 'Nombre de usuario es requerido';
       isValid = false;
     }
     if (!password) {
@@ -34,8 +48,30 @@ export const LoginForm = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      console.log('Formulario enviado', formValues);
+      login(username, password).then(
+        (response) => {
+          if (response?.ok === true) {
+            setSnackbarMessage('Inicio de sesión exitoso');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+          }
+          if (response?.ok === false) {
+            setSnackbarMessage('Credenciales incorrectas');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+          }
+        },
+        (error) => {
+          setSnackbarMessage('Error en inicio sesión' + error);
+          setSnackbarSeverity('error');
+          setSnackbarOpen(true);
+        },
+      );
     }
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -64,21 +100,21 @@ export const LoginForm = () => {
         </Typography>
         <TextField
           fullWidth
-          label="Email"
+          label="Usuario"
           variant="outlined"
           margin="normal"
-          type="email"
-          placeholder="jrod@gmail.com"
-          name="email"
-          value={formValues.email}
+          type="text"
+          placeholder="Usuario"
+          name="username"
+          value={formValues.username}
           onChange={handleChange}
-          error={Boolean(errors.email)}
-          helperText={errors.email}
+          error={Boolean(errors.username)}
+          helperText={errors.username}
         />
         <Box sx={{ position: 'relative' }}>
           <TextField
             fullWidth
-            label="Password"
+            label="Contraseña"
             variant="outlined"
             margin="normal"
             type={showPassword ? 'text' : 'password'}
@@ -123,6 +159,20 @@ export const LoginForm = () => {
           </Button>
         </Typography>
       </Box>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
