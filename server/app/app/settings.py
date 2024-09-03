@@ -13,6 +13,7 @@ import os
 from pathlib import Path
 import datetime
 AUTH_USER_MODEL = 'users.Users'
+CORS_ALLOW_ALL_ORIGINS = True
 
 JWT_SECRET_KEY = os.environ.get('JWT_SECRET_KEY')
 JWT_EXPIRATION_DELTA = datetime.timedelta(days=1)
@@ -30,7 +31,7 @@ SECRET_KEY = 'django-insecure-3i*#)9f#6+0=@f&u-l^1(!i(&kobd2d$bg020ici*8&1i-61@7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -42,14 +43,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     "radio",
     "saved",
     "search",
     "users",
+    "history",
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'app.urls'
 
