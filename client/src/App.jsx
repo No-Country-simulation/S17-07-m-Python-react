@@ -1,42 +1,27 @@
-import { useState } from 'react';
-import reactLogo from './core/assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
-import { Button, Typography } from '@mui/material';
-import { Numbers } from '@mui/icons-material';
+import React from "react";
+import "./Navbar.css";
 
-function App() {
-  const [count, setCount] = useState(0);
-
+const Navbar = () => {
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="navbar">
+      <div className="logo-container">
+        <div className="logo-circle">
+          <img
+            src="https://res.cloudinary.com/dfulftofe/image/upload/v1725286571/jilguero_s4jlwb.webp"
+            alt="Logo"
+          />
+        </div>
+        <div className="text-container">
+          <div className="text-1">Jilguero</div>
+          <div className="text-2">.com</div>
+        </div>
       </div>
-      <Typography component="h1" variant="h1" fontWeight={400}>
-        Vite + React
-      </Typography>
-      <div className="card">
-        <Button
-          onClick={() => setCount((count) => count + 1)}
-          variant="contained"
-        >
-          count is {count} <Numbers />
-        </Button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="buttons">
+        <button className="create-account-button">Crear cuenta</button>
+        <button className="login-button">Ingresar</button>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    </div>
   );
-}
+};
 
-export default App;
+export default Navbar;
