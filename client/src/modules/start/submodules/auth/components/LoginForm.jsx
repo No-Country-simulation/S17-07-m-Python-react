@@ -10,13 +10,14 @@ import {
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { login } from '../services/login';
+import { useNavigate } from 'react-router-dom';
 
 export const LoginForm = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formValues, setFormValues] = useState({ username: '', password: '' });
   const [errors, setErrors] = useState({ username: '', password: '' });
 
-  // Snackbar states
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('info');
@@ -51,9 +52,11 @@ export const LoginForm = () => {
       login(username, password).then(
         (response) => {
           if (response?.ok === true) {
+            localStorage.setItem('username', username);
             setSnackbarMessage('Inicio de sesión exitoso');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
+            navigate('/');
           }
           if (response?.ok === false) {
             setSnackbarMessage('Credenciales incorrectas');
