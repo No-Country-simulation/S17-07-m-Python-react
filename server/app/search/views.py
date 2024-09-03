@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from users.utils.decorators import jwt_required
 from django.http import JsonResponse
+from saved.models import Favorite
 
 # Create your views here.
 @method_decorator(csrf_exempt, name="dispatch")
@@ -23,8 +24,9 @@ class GetSongs(View):
         if response.status_code == 200:
             data = response.json()
             if data['data']:
-                # Retorna la primera canción encontrada
+                for song in data["data"]:
+                    song["favorite"] = Favorite.objects.filter(user=request.user, element_id=song["id"]).exists()
                 return JsonResponse({
-                    'title': data['data']
-                })
+                    'data': data['data']
+                }, status=200)
         return JsonResponse(status=400)
