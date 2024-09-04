@@ -5,6 +5,7 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import { PublicRoute } from './PublicRoute';
 import PrivateRoute from './PrivateRoute';
 import { HomePage } from '../../modules/dashboard/pages/HomePage';
+import RegisterPage from '../../modules/start/submodules/auth/pages/RegisterPage';
 
 function AppRoute() {
   return (
@@ -18,7 +19,14 @@ function AppRoute() {
             </PublicRoute>
           }
         />
-        {/* <Route path="/register" element={<Register />} /> */}
+        <Route
+          path="/register"
+          element={
+            <PublicRoute>
+              <RegisterPage />
+            </PublicRoute>
+          }
+        />
         <Route
           path="/"
           element={
