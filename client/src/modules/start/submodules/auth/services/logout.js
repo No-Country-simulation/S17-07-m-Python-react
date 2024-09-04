@@ -8,6 +8,8 @@ export const useLogout = () => {
 
   const logout = () => {
     localStorage.removeItem('username');
+    localStorage.removeItem('token');
+    localStorage.removeItem('tokenDate');
 
     if (setLogged) {
       setLogged(false);

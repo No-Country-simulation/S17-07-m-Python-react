@@ -52,7 +52,6 @@ export const LoginForm = () => {
       login(username, password).then(
         (response) => {
           if (response?.ok === true) {
-            localStorage.setItem('username', username);
             setSnackbarMessage('Inicio de sesión exitoso');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
