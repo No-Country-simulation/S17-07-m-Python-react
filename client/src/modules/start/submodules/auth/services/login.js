@@ -13,6 +13,8 @@ export const login = async (username, password) => {
     if (response.status === 200) {
       const token = response.data.token;
       localStorage.setItem('token', token);
+      localStorage.setItem('tokenDate', Date.now().toString());
+      localStorage.setItem('username', username);
 
       return {
         ok: true,
