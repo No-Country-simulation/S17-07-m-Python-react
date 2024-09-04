@@ -7,23 +7,30 @@ import {
   Typography,
   Checkbox,
   FormControlLabel,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
+import { register } from '../services/register';
+
+const formInitialValue = {
+  username: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
+  termsAccepted: false,
+};
 
 export const RegisterForm = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
 
-  const [formValues, setFormValues] = useState({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    termsAccepted: false,
-  });
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+
+  const [formValues, setFormValues] = useState(formInitialValue);
   const [errors, setErrors] = useState({
     username: '',
     email: '',
@@ -89,12 +96,38 @@ export const RegisterForm = () => {
     setErrors(newErrors);
 
     if (isValid) {
-      console.log('Formulario válido, ', formValues);
+      register(username, email, password).then(
+        (response) => {
+          if (response?.ok === true) {
+            setSnackbarMessage('¡Registro exitoso!');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+            setFormValues(formInitialValue);
+          }
+          if (response?.ok === false) {
+            setSnackbarMessage(response.message || 'Datos inválidos');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+          }
+        },
+        (error) => {
+          setSnackbarMessage(
+            'Error en el registro: ' +
+              (error.message || 'Ocurrió un error inesperado'),
+          );
+          setSnackbarSeverity('error');
+          setSnackbarOpen(true);
+        },
+      );
     }
   };
 
   const handleOpenModal = () => setModalOpen(true);
   const handleCloseModal = () => setModalOpen(false);
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
 
   return (
     <Container
@@ -285,6 +318,19 @@ export const RegisterForm = () => {
           </Button>
         </Box>
       </Modal>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity={snackbarSeverity}
+          sx={{ width: '100%' }}
+        >
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 };
