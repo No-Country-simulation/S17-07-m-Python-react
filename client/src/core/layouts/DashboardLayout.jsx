@@ -24,6 +24,7 @@ const DashboardLayout = () => {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+            bgcolor: 'brown.main',
           },
         }}
         variant="permanent"

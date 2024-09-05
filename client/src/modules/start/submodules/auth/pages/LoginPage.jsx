@@ -7,15 +7,15 @@ const LoginPage = () => {
   return (
     <Box
       sx={{
-        bgcolor: '#F3E1C7',
+        bgcolor: 'white.main',
         backgroundImage:
           'url(https://res.cloudinary.com/dfulftofe/image/upload/v1725286571/jilguero_s4jlwb.webp)',
         backgroundSize: {
           xs: '100% 100%',
           sm: '100% 100%',
-          md: '50% 100%',
+          md: '40% 80%',
         },
-        backgroundPosition: 'left',
+        backgroundPosition: 'left bottom',
         backgroundRepeat: 'no-repeat',
         height: '100vh',
       }}

@@ -19,7 +19,7 @@ export const Navbar = () => {
   return (
     <Box sx={{ flexGrow: 1, height: '10vh' }}>
       <AppBar position="static">
-        <Toolbar sx={{ padding: 2 /* bgcolor: 'background.default' */ }}>
+        <Toolbar sx={{ padding: 2, bgcolor: 'background.default' }}>
           <Avatar alt="Jilguero logo" src="/logo.svg" />
           <Box>
             <Typography
@@ -52,7 +52,7 @@ export const Navbar = () => {
               component={RouterLink}
               to="/register"
               variant={isRegisterPage ? 'outlined' : 'text'}
-              color={isRegisterPage ? 'primary' : 'inherit'}
+              color={isRegisterPage ? 'secondary' : 'inherit'}
             >
               Crear cuenta
             </Button>
@@ -60,7 +60,7 @@ export const Navbar = () => {
               component={RouterLink}
               to="/login"
               variant={isLoginPage ? 'outlined' : 'text'}
-              color={isLoginPage ? 'primary' : 'inherit'}
+              color={isLoginPage ? 'secondary' : 'inherit'}
             >
               Ingresar
             </Button>
