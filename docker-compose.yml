@@ -48,6 +48,8 @@ services:
       - "3000:80"
     networks:
       - mynetwork
+    environment:
+      - VITE_API_URL=http://server:8000/api
 
 networks:
   mynetwork:

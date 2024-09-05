@@ -1,18 +1,11 @@
-import { useState } from 'react';
-import reactLogo from './core/assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
-import { Button, Typography } from '@mui/material';
-import { Numbers } from '@mui/icons-material';
-import MusicPlayer from './modules/dashboard/submodules/player/components/musicPlayer/musicPlayer';
+import AppRoute from './core/routes/AppRoute';
+import { AuthProvider } from './modules/start/submodules/auth/services/store/auth';
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <MusicPlayer/>
-    </>
+    <AuthProvider>
+      <AppRoute />
+    </AuthProvider>
   );
 }
 
