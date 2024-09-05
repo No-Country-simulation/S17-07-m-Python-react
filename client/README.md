@@ -167,12 +167,15 @@ Structure based on modular architecture
 
 Two custom themes are configured in Material UI using `createTheme`, with specific color palettes for light and dark modes. The themes include primary, secondary, red, yellow, and brown colors, each with different shades depending on the mode. These themes ensure consistent visuals across the application.
 
-| Color     | `lightTheme`                                                              | `darkTheme`                                                               |
-| --------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
-| Primary   | ![#D2B50F](https://via.placeholder.com/15/D2B50F/000000?text=+) `#D2B50F` | ![#FACD66](https://via.placeholder.com/15/FACD66/000000?text=+) `#FACD66` |
-| Secondary | ![#FACD66](https://via.placeholder.com/15/FACD66/000000?text=+) `#FACD66` | ![#D2B50F](https://via.placeholder.com/15/D2B50F/000000?text=+) `#D2B50F` |
-| Red       | ![#a3534b](https://via.placeholder.com/15/a3534b/000000?text=+) `#a3534b` | ![#8C281F](https://via.placeholder.com/15/8C281F/000000?text=+) `#8C281F` |
-| Yellow    | ![#FFE668](https://via.placeholder.com/15/FFE668/000000?text=+) `#FFE668` | ![#FADB3E](https://via.placeholder.com/15/FADB3E/000000?text=+) `#FADB3E` |
-| Brown     | ![#F3E1C7](https://via.placeholder.com/15/F3E1C7/000000?text=+) `#F3E1C7` | ![#594539](https://via.placeholder.com/15/594539/000000?text=+) `#594539` |
+| Color      | `lightTheme`                                                              | `darkTheme`                                                               |
+| ---------- | ------------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| Primary    | ![#D2B50F](https://via.placeholder.com/15/D2B50F/000000?text=+) `#D2B50F` | ![#D2B50F](https://via.placeholder.com/15/D2B50F/000000?text=+) `#D2B50F` |
+| Secondary  | ![#897608](https://via.placeholder.com/15/897608/000000?text=+) `#897608` | ![#FACD66](https://via.placeholder.com/15/FACD66/000000?text=+) `#FACD66` |
+| Red        | ![#a3534b](https://via.placeholder.com/15/a3534b/000000?text=+) `#a3534b` | ![#8C281F](https://via.placeholder.com/15/8C281F/000000?text=+) `#8C281F` |
+| Yellow     | ![#FFE668](https://via.placeholder.com/15/FFE668/000000?text=+) `#FFE668` | ![#FADB3E](https://via.placeholder.com/15/FADB3E/000000?text=+) `#FADB3E` |
+| Brown      | ![#f8ebd9](https://via.placeholder.com/15/f8ebd9/000000?text=+) `#f8ebd9` | ![#1E1E1E](https://via.placeholder.com/15/1E1E1E/000000?text=+) `#1E1E1E` |
+| White      | ![#F3E1C7](https://via.placeholder.com/15/F3E1C7/000000?text=+) `#F3E1C7` | ![#F3E1C7](https://via.placeholder.com/15/F3E1C7/000000?text=+) `#F3E1C7` |
+| Black      | ![#594539](https://via.placeholder.com/15/594539/000000?text=+) `#594539` | ![#594539](https://via.placeholder.com/15/594539/000000?text=+) `#594539` |
+| Background | ![#FFF8ED](https://via.placeholder.com/15/FFF8ED/000000?text=+) `#FFF8ED` | ![#212121](https://via.placeholder.com/15/212121/000000?text=+) `#212121` |
 
 _For further color customization, refer to the [Material UI Color Playground](https://mui.com/material-ui/customization/color/#playground)._
