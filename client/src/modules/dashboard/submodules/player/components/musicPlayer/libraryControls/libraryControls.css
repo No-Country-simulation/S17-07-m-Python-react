@@ -1,0 +1,11 @@
+.libraryControls{
+    position: absolute;
+    bottom: 30%;
+    right: 10%;
+    width: 10vw;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}

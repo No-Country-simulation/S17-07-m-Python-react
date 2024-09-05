@@ -1,0 +1,37 @@
+.songAlbumArtist{
+    z-index: 2;
+    width: 20%;
+    height: 80%;
+    position: absolute;
+    top: 10%;
+    left: 5%;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+.songAlbumArtist .albumCover{
+    max-width: 100%;
+    max-height: 100%;
+    position: absolute;
+    left: 0%
+}
+
+.songAlbumArtist .songInfo{
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    max-height: 100%;
+    width:auto;
+    max-width: 80%;
+    line-height: 1%;
+    position: absolute;
+    right:0%
+}
+
+.songAlbumArtist .songInfo p{
+    font-size: 80%;
+}
+
