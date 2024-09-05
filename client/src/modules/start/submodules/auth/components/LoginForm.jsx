@@ -142,7 +142,7 @@ export const LoginForm = () => {
         <Button
           fullWidth
           variant="contained"
-          color="primary"
+          color="secondary"
           sx={{ mt: 2 }}
           type="submit"
         >
