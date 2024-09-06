@@ -1,5 +1,5 @@
 {
-  "conventionalCommits.scopes": ["frontend", "theme", "auth"],
+  "conventionalCommits.scopes": ["frontend", "theme", "auth", "player"],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,
   "eslint.validate": [
