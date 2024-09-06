@@ -1,5 +1,4 @@
-import { VolumeUp } from '@mui/icons-material';
-import { VolumeDown } from '@mui/icons-material';
+import { VolumeUp, VolumeDown, VolumeOff } from '@mui/icons-material';
 import { Box, Slider, Stack } from '@mui/material';
 import React from 'react';
 
@@ -11,7 +10,13 @@ export const VolumeSlider = ({ volume, handleVolumeChange }) => {
         direction="row"
         sx={{ alignItems: 'center', mb: 1, width: '200px' }}
       >
-        <VolumeDown />
+        {volume === 0 ? (
+          <VolumeOff />
+        ) : volume <= 0.5 ? (
+          <VolumeDown />
+        ) : (
+          <VolumeUp />
+        )}
         <Slider
           aria-label="Volume"
           sx={{ color: 'secondary.main' }}
@@ -21,7 +26,6 @@ export const VolumeSlider = ({ volume, handleVolumeChange }) => {
           value={volume}
           onChange={handleVolumeChange}
         />
-        <VolumeUp />
       </Stack>
     </Box>
   );
