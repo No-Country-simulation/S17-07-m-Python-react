@@ -1,4 +1,5 @@
 import { Box, Typography } from '@mui/material';
+import spinner from '../../../../../../../core/assets/spinner.gif';
 
 export default function CurrentMusic({ props }) {
   const { trackData } = props;
@@ -20,6 +21,17 @@ export default function CurrentMusic({ props }) {
         <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
           {trackData?.artist?.name}
         </Typography>
+        <Box
+          component="img"
+          src={trackData?.title ? undefined : spinner}
+          alt="Loading"
+          sx={{
+            width: 56,
+            height: 'auto',
+            objectFit: 'contain',
+            display: trackData?.title ? 'none' : 'block',
+          }}
+        />
         <Typography
           variant="body2"
           color="text.secondary"
@@ -28,9 +40,10 @@ export default function CurrentMusic({ props }) {
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             width: { xs: '120px', sm: '180px' },
+            display: trackData?.title ? 'block' : 'none',
           }}
         >
-          {trackData?.title}
+          {trackData?.title || ''}
         </Typography>
       </Box>
     </Box>
