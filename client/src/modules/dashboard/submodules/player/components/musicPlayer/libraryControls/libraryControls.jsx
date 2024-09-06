@@ -1,37 +1,29 @@
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
-import "./libraryControls.css"
+import { Box, IconButton } from '@mui/material';
 
-export default function LibraryControls({props}){
-    return(
-        <div className="libraryControls">
-        <FavoriteBorderOutlinedIcon 
-       /* sx={{
-          position: "absolute",
-          bottom: "20%",
-          right: "15%",
-          color:"white"
-        }} */
-        />
+export default function LibraryControls() {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 1,
+      }}
+    >
+      <IconButton>
+        <FavoriteBorderOutlinedIcon sx={{ fontSize: '1.5rem' }} />
+      </IconButton>
 
-        <LibraryAddIcon 
-        /*  sx={{
-          position: "absolute",
-          bottom: "20%",
-          right: "12.5%",
-          color:"white"
-        }} */
-        />
+      <IconButton>
+        <LibraryAddIcon sx={{ fontSize: '1.5rem' }} />
+      </IconButton>
 
-        <KeyboardArrowUpIcon 
-       /* sx={{
-          position: "absolute",
-          bottom: "20%",
-          right: "10%",
-          color:"white"
-        }} */
-        />
-        </div>
-    )
+      <IconButton>
+        <KeyboardArrowUpIcon sx={{ fontSize: '1.5rem' }} />
+      </IconButton>
+    </Box>
+  );
 }

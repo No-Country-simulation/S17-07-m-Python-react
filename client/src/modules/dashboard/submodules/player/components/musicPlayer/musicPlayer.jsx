@@ -1,112 +1,161 @@
+import { useContext, useRef, useState, useEffect } from 'react';
 
-import { useState, useEffect, useRef } from "react";
-import ReactPlayer from "react-player";
-import LibraryControls from "./libraryControls/libraryControls";
-import MusicControls from "./musicControls/musicControls";
-import CurrentMusic from "./currentMusic/currentMusic";
+import ReactPlayer from 'react-player';
+import LibraryControls from './libraryControls/libraryControls';
+import MusicControls from './musicControls/musicControls';
+import CurrentMusic from './currentMusic/currentMusic';
 import Box from '@mui/material/Box';
-import Stack from '@mui/material/Stack';
-import Slider from '@mui/material/Slider';
-import VolumeDown from '@mui/icons-material/VolumeDown';
-import VolumeUp from '@mui/icons-material/VolumeUp';
-import "./musicPlayer.css";
-import axios from "axios";
+import { TimeSlider } from './musicControls/timeSlider';
+import { AppBar, Stack, Toolbar } from '@mui/material';
+import { VolumeSlider } from './musicControls/volumeSlider';
+import { TimeSliderMovil } from './musicControls/timeSliderMovil';
+import { MusicPlayerContext } from '../../../playlists/services/store/player';
 
-function ContinuousSlider({props}) {
-  const {volume, handleVolumeChange} = props
-
-
-  return (
-    <Box sx={{ width: "13vw", position: "absolute", top:"4.7vh", right:"46vh" }}>
-      <Stack spacing={2} direction="row" sx={{ alignItems: 'center', mb: 1 }}>
-        <VolumeDown />
-        <Slider aria-label="Volume" sx={{color:"#FACD66"}} min={0} max={1} step={0.1} value={volume} onChange={handleVolumeChange} />
-        <VolumeUp />
-      </Stack>
-    </Box>
-  );
-}
-
-const MusicPlayer = ({trackId}) => {
-  const repeatValues = ["off", "on", "one"]
-  const [isPlaying, setIsPlaying] = useState(false); 
-  const [volume, setVolume] = useState(0.8); 
-  const [repeat, setRepeat] = useState(repeatValues[0])
-  const [shuffle, setShuffle] = useState(false)
-  const [trackData, setTrackData] = useState("")
+const MusicPlayer = () => {
+  const { trackData, nextTrack, previousTrack } =
+    useContext(MusicPlayerContext);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(0.5);
   const [currentTime, setCurrentTime] = useState(0);
+  const repeatValues = ['off', 'on', 'one'];
+  const [repeat, setRepeat] = useState(repeatValues[0]);
+  const [shuffle, setShuffle] = useState(false);
+  const playerRef = useRef(null);
 
-  const playerRef = useRef(null)
-  const trackUrl = "https://cors-anywhere.herokuapp.com/https://api.deezer.com/track/3135556"
+  const currentTrack = trackData?.preview;
 
   useEffect(() => {
-    const fetchTrackData = async () => {
-      try {
-        const response = await axios.get(trackUrl);
-        setTrackData(response.data);
-      } catch (error) {
-        console.error('Error fetching track data from Deezer:', error);
-      }
-    };
-    fetchTrackData();
-  }, [trackId]);
+    if (trackData) {
+      setIsPlaying(true);
+    }
+  }, [trackData]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       if (playerRef.current) {
-        setCurrentTime(playerRef.current.getCurrentTime()); 
+        setCurrentTime(playerRef.current.getCurrentTime());
       }
-    }, 1000); 
+    }, 1000);
 
-    return () => clearInterval(interval); 
+    return () => clearInterval(interval);
   }, []);
 
-
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying); 
+    setIsPlaying(!isPlaying);
   };
 
   const handleVolumeChange = (event) => {
-    setVolume(parseFloat(event.target.value)); 
+    setVolume(parseFloat(event.target.value));
+  };
+
+  const handleTimeChange = (event) => {
+    setCurrentTime(parseFloat(event.target.value));
+    playerRef.current.seekTo(event.target.value);
   };
 
   const handleRepeatChange = () => {
-    const index = repeatValues.indexOf(repeat)
+    const index = repeatValues.indexOf(repeat);
     if (index === 2) setRepeat(repeatValues[0]);
-    setRepeat(repeatValues[(index+1)%3])
-  }
+    setRepeat(repeatValues[(index + 1) % 3]);
+  };
 
   const handleShuffle = () => {
-    setShuffle(!shuffle)
-  }
+    setShuffle(!shuffle);
+  };
+
+  const handleEnded = () => {
+    if (repeat === 'one') {
+      playerRef.current.seekTo(0);
+      setIsPlaying(true);
+      setRepeat(repeatValues[0]);
+      return;
+    }
+    handleNextTrack();
+  };
+
+  const handleNextTrack = () => {
+    nextTrack();
+    setIsPlaying(true);
+  };
+  const handlePreviousTrack = () => {
+    previousTrack();
+    setIsPlaying(true);
+  };
 
   return (
-    <div className="music-player">
-      <ReactPlayer
-        ref={playerRef}
-        url={trackUrl}
-        playing={isPlaying} 
-        volume={volume} 
-        controls={false} 
-        height="100px" 
-        width="100%" 
-        display="none"
-      />
-      
-        <MusicControls 
-        props={{ isPlaying, volume, repeat, shuffle, handlePlayPause, handleVolumeChange, handleRepeatChange, handleShuffle}}
+    <Box>
+      <AppBar position="fixed" sx={{ top: 'auto', bottom: 0 }}>
+        <Toolbar sx={{ bgcolor: 'background.default', padding: 1 }}>
+          {currentTrack && (
+            <ReactPlayer
+              ref={playerRef}
+              url={currentTrack}
+              playing={isPlaying}
+              volume={volume}
+              loop={repeat === 'on'}
+              controls={false}
+              onEnded={handleEnded}
+              width="0"
+              height="0"
+            />
+          )}
+
+          <CurrentMusic props={{ trackData }} />
+
+          <Stack
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: 2,
+            }}
+          >
+            <MusicControls
+              props={{
+                isPlaying,
+                volume,
+                handlePlayPause,
+                handleVolumeChange,
+                handleNextTrack,
+                handlePreviousTrack,
+                handleRepeatChange,
+                handleShuffle,
+                repeat,
+                shuffle,
+              }}
+            />
+            <TimeSlider
+              currentTime={currentTime}
+              handleTimeChange={handleTimeChange}
+            />
+          </Stack>
+
+          <Stack
+            display={{ xs: 'none', sm: 'none', md: 'flex' }}
+            direction={{ md: 'column', lg: 'row' }}
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 1,
+            }}
+          >
+            <VolumeSlider
+              volume={volume}
+              handleVolumeChange={handleVolumeChange}
+            />
+            <LibraryControls />
+          </Stack>
+        </Toolbar>
+
+        <TimeSliderMovil
+          currentTime={currentTime}
+          handleTimeChange={handleTimeChange}
         />
-
-        <ContinuousSlider props={{volume, handleVolumeChange}} />
-
-        <LibraryControls />
-
-        <p className="trackTime">{currentTime} </p>
-
-        <CurrentMusic props={{trackData}} />
-
-      
-    </div>
+      </AppBar>
+    </Box>
   );
 };
 

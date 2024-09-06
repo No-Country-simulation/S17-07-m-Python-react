@@ -1,90 +1,120 @@
+import { Box, IconButton } from '@mui/material';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import ShuffleOnIcon from '@mui/icons-material/ShuffleOn';
+import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 import PauseCircleIcon from '@mui/icons-material/PauseCircle';
 import SkipNextIcon from '@mui/icons-material/SkipNext';
-import SkipPreviousIcon from '@mui/icons-material/SkipPrevious';
 import RepeatIcon from '@mui/icons-material/Repeat';
-import RepeatOneOnIcon from '@mui/icons-material/RepeatOneOn';
 import RepeatOnIcon from '@mui/icons-material/RepeatOn';
-import "./musicControls.css"
+import RepeatOneOnIcon from '@mui/icons-material/RepeatOneOn';
 
-export default function MusicControls ({props}){
-    const {isPlaying, volume, repeat, shuffle, handlePlayPause, handleVolumeChange, handleRepeatChange, handleShuffle} = props
-    return(
-        <div className="musicControls">
+export default function MusicControls({ props }) {
+  const {
+    isPlaying,
+    repeat,
+    shuffle,
+    handlePlayPause,
+    handleRepeatChange,
+    handleShuffle,
+    handleNextTrack,
+    handlePreviousTrack,
+  } = props;
 
-        {!shuffle ? 
-        <ShuffleIcon 
-        onClick={handleShuffle} 
-        sx={{
-            cursor: "pointer",
-            height: "5vh",
-            maxHeight: "5vh",
-        }}
-        /> 
-
-        : 
-
-        <ShuffleOnIcon 
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: { xs: 1, sm: 2 },
+      }}
+    >
+      <IconButton
         onClick={handleShuffle}
-        sx={{
-            cursor: "pointer",
-            height: "5vh",
-            maxHeight: "5vh",
-            color: "#FACD66"
-        }}
-        />}
+        sx={{ display: { xs: 'none', sm: 'flex' } }}
+      >
+        {!shuffle ? (
+          <ShuffleIcon
+            sx={{
+              fontSize: '1.8rem',
+            }}
+          />
+        ) : (
+          <ShuffleOnIcon
+            sx={{
+              color: 'secondary.main',
+              fontSize: '1.8rem',
+            }}
+          />
+        )}
+      </IconButton>
 
-        <SkipPreviousIcon />
-
-        {!isPlaying ?
-        <PlayCircleIcon 
-        onClick={handlePlayPause}
-        sx={{ 
-          width: "6vw",
-          height: "10vh",
-          color: "#FACD66",
-          cursor: "pointer",
-
-        }}
+      <IconButton onClick={handlePreviousTrack}>
+        <SkipPreviousIcon
+          sx={{
+            fontSize: '1.8rem',
+          }}
         />
-        :
-        <PauseCircleIcon
-        onClick={handlePlayPause}
-        sx={{
-          width: "6vw",
-          height: "10vh",
-          color: "#FACD66",
-          cursor: "pointer"
-        }}
-        />}
+      </IconButton>
 
-        <SkipNextIcon />
+      {/* Play / Pause */}
+      <IconButton onClick={handlePlayPause}>
+        {!isPlaying ? (
+          <PlayCircleIcon
+            sx={{
+              color: 'secondary.main',
+              fontSize: '3.5rem',
+            }}
+          />
+        ) : (
+          <PauseCircleIcon
+            sx={{
+              color: 'secondary.main',
+              fontSize: '3.5rem',
+            }}
+          />
+        )}
+      </IconButton>
 
-        {repeat === "off" && <RepeatIcon onClick={handleRepeatChange} />}
-        {repeat === "on" && <RepeatOnIcon onClick={handleRepeatChange} sx={{
-            cursor: "pointer",
-            height: "5vh",
-            maxHeight: "5vh",
-            color: "#FACD66"
-        }}/>}
-        {repeat === "one" && <RepeatOneOnIcon onClick={handleRepeatChange} sx={{
-            cursor: "pointer",
-            height: "5vh",
-            maxHeight: "5vh",
-            color: "#FACD66"
-        }}/>}
-
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={volume}
-          onChange={handleVolumeChange}
-          className="volumeControl"
+      {/* Skip next */}
+      <IconButton onClick={handleNextTrack}>
+        <SkipNextIcon
+          sx={{
+            fontSize: '1.8rem',
+          }}
         />
-        </div>
-    )
+      </IconButton>
+
+      {/* Repeat */}
+      <IconButton
+        onClick={handleRepeatChange}
+        sx={{ display: { xs: 'none', sm: 'flex' } }}
+      >
+        {repeat === 'off' && (
+          <RepeatIcon
+            sx={{
+              fontSize: '1.8rem',
+            }}
+          />
+        )}
+        {repeat === 'on' && (
+          <RepeatOnIcon
+            sx={{
+              color: 'secondary.main',
+              fontSize: '1.8rem',
+            }}
+          />
+        )}
+        {repeat === 'one' && (
+          <RepeatOneOnIcon
+            sx={{
+              color: 'secondary.main',
+              fontSize: '1.8rem',
+            }}
+          />
+        )}
+      </IconButton>
+    </Box>
+  );
 }
