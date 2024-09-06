@@ -3,23 +3,30 @@ import { Button, Stack } from '@mui/material';
 import { MusicPlayerContext } from '../submodules/playlists/services/store/player';
 
 export const HomePage = () => {
-  const { setTrackId, setIsPlaylist } = useContext(MusicPlayerContext);
+  const { setTrackId, setType } = useContext(MusicPlayerContext);
 
-  const handlePlay = (track, isPlaylist) => {
-    setTrackId(track);
-    setIsPlaylist(isPlaylist);
+  const handlePlay = (track, type) => {
+    setTrackId(track); //number
+    setType(type); //string
   };
 
   return (
     <Stack spacing={2} alignItems="center">
-      <Button variant="contained" onClick={() => handlePlay(3135556, false)}>
+      <Button variant="contained" onClick={() => handlePlay(3135556, 'track')}>
         Play Single Track
       </Button>
 
-      <Button variant="contained" onClick={() => handlePlay(908622995, true)}>
-        Play Playlist
+      <Button
+        variant="contained"
+        onClick={() => handlePlay(533944192, 'album')}
+      >
+        Play Album
       </Button>
-      <Button variant="contained" onClick={() => handlePlay(178699142, true)}>
+
+      <Button
+        variant="contained"
+        onClick={() => handlePlay(178699142, 'playlist')}
+      >
         Play Playlist
       </Button>
     </Stack>
