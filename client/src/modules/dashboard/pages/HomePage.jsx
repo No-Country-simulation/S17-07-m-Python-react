@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
-import { Button, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { MusicPlayerContext } from '../submodules/playlists/services/store/player';
+import { TopBar } from '../components/TopBar';
 
 export const HomePage = () => {
   const { setTrackId, setType } = useContext(MusicPlayerContext);
@@ -11,24 +12,30 @@ export const HomePage = () => {
   };
 
   return (
-    <Stack spacing={2} alignItems="center">
-      <Button variant="contained" onClick={() => handlePlay(3135556, 'track')}>
-        Play Single Track
-      </Button>
+    <Box>
+      <TopBar />
+      <Stack spacing={1} alignItems="center">
+        <Button
+          variant="contained"
+          onClick={() => handlePlay(3135556, 'track')}
+        >
+          Play Single Track
+        </Button>
 
-      <Button
-        variant="contained"
-        onClick={() => handlePlay(533944192, 'album')}
-      >
-        Play Album
-      </Button>
+        <Button
+          variant="contained"
+          onClick={() => handlePlay(533944192, 'album')}
+        >
+          Play Album
+        </Button>
 
-      <Button
-        variant="contained"
-        onClick={() => handlePlay(178699142, 'playlist')}
-      >
-        Play Playlist
-      </Button>
-    </Stack>
+        <Button
+          variant="contained"
+          onClick={() => handlePlay(178699142, 'playlist')}
+        >
+          Play Playlist
+        </Button>
+      </Stack>
+    </Box>
   );
 };
