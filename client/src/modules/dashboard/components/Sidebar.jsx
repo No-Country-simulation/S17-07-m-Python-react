@@ -11,14 +11,10 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Logo } from './Logo';
 import { Link } from 'react-router-dom';
-import { useLogout } from '../../start/submodules/auth/services/logout';
 import { Home } from '@mui/icons-material';
-import { Timer } from '@mui/icons-material';
 import { AccessTime } from '@mui/icons-material';
 import { Favorite } from '@mui/icons-material';
-import { PeopleAltOutlined } from '@mui/icons-material';
 import { PeopleAlt } from '@mui/icons-material';
-import { CompassCalibration } from '@mui/icons-material';
 import { Explore } from '@mui/icons-material';
 import { LibraryAdd } from '@mui/icons-material';
 
@@ -30,6 +26,7 @@ export const Sidebar = ({ drawerWidth }) => {
   return (
     <Drawer
       sx={{
+        display: { xs: 'none', md: 'block' },
         width: drawerWidth,
         flexShrink: 0,
         '& .MuiDrawer-paper': {
