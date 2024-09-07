@@ -19,7 +19,13 @@ const DashboardLayout = () => {
   return (
     <MusicPlayerProvider>
       <Box sx={{ display: 'flex' }}>
-        <Box sx={{ display: 'flex', zIndex: '1' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            zIndex: '1',
+            width: `100vw`,
+          }}
+        >
           <Drawer
             sx={{
               width: drawerWidth,
@@ -54,10 +60,13 @@ const DashboardLayout = () => {
           </Drawer>
           <Box
             component="main"
-            sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
+            sx={{
+              flexGrow: 1,
+              bgcolor: 'background.default',
+              p: 2,
+              minWidth: `100% - ${drawerWidth}px`,
+            }}
           >
-            <Toolbar />
-
             <Outlet />
           </Box>
         </Box>
