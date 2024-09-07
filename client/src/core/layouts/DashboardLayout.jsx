@@ -114,10 +114,10 @@ const DashboardLayout = () => {
           {/* Línea de separación */}
           <Divider
             sx={{
-              my: 2, // Espaciado vertical
-              backgroundColor: theme.palette.primary.main, // Color primario
-              width: '80%', // Ancho del 80% del contenedor
-              mx: 'auto', // Centrar horizontalmente con margin auto
+              my: 2, 
+              backgroundColor: theme.palette.primary.main, 
+              width: '80%', 
+              mx: 'auto', 
             }}
           />
 
@@ -127,7 +127,7 @@ const DashboardLayout = () => {
             sx={{
               marginLeft: '16px',
               color: '#9C9C9C',
-              fontSize: '15px', // Tamaño de 15px
+              fontSize: '15px', 
               fontWeight: 'bold',
             }}
           >
@@ -195,10 +195,10 @@ const DashboardLayout = () => {
           {/* Línea de separación */}
           <Divider
             sx={{
-              my: 2, // Espaciado vertical
-              backgroundColor: theme.palette.primary.main, // Color primario
-              width: '80%', // Ancho del 80% del contenedor
-              mx: 'auto', // Centrar horizontalmente con margin auto
+              my: 2, 
+              backgroundColor: theme.palette.primary.main, 
+              width: '80%', 
+              mx: 'auto', 
             }}
           />
 
