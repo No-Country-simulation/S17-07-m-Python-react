@@ -50,6 +50,7 @@ services:
       - mynetwork
     environment:
       - VITE_API_URL=http://server:8000/api
+      - VITE_API_MUSIC=https://cors-anywhere.herokuapp.com/https://api.deezer.com
 
 networks:
   mynetwork:
