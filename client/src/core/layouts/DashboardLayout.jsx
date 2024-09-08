@@ -1,21 +1,28 @@
 import React from 'react';
-import { Outlet, Link } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  Drawer,
-  List,
-  ListItem,
-  ListItemText,
-  Toolbar,
-  Typography,
-} from '@mui/material';
-import { useLogout } from '../../modules/start/submodules/auth/services/logout';
+import { Outlet } from 'react-router-dom';
+import { Box } from '@mui/material';
+
 import MusicPlayer from '../../modules/dashboard/submodules/player/components/musicPlayer/musicPlayer';
 import { MusicPlayerProvider } from '../../modules/dashboard/submodules/playlists/services/store/player';
+import { Sidebar } from '../../modules/dashboard/components/Sidebar';
+import { SidebarMobile } from '../../modules/dashboard/components/SidebarMobile';
+import { TabBar } from '../../modules/dashboard/components/TabBar';
+import { useState } from 'react';
+
 const drawerWidth = 240;
+const drawerWidthMobile = '100vw';
 
 const DashboardLayout = () => {
+  const [stateDrawer, setStateDrawer] = useState(false);
+
+  const openDrawer = () => {
+    setStateDrawer(true);
+  };
+
+  const closeDrawer = () => {
+    setStateDrawer(false);
+  };
+
   return (
     <MusicPlayerProvider>
       <Box sx={{ display: 'flex' }}>
@@ -26,45 +33,21 @@ const DashboardLayout = () => {
             width: `100vw`,
           }}
         >
-          <Drawer
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-                bgcolor: 'brown.main',
-              },
-            }}
-            variant="permanent"
-            anchor="left"
-          >
-            <Toolbar>
-              <Typography variant="h6" noWrap component="div">
-                Dashboard
-              </Typography>
-            </Toolbar>
-            <List>
-              <ListItem button component={Link} to="/">
-                <ListItemText primary="Home" />
-              </ListItem>
-              <Button
-                onClick={useLogout()}
-                variant="text"
-                color="warning"
-                fullWidth
-              >
-                Salir
-              </Button>
-            </List>
-          </Drawer>
+          <Sidebar drawerWidth={drawerWidth} />
+          <SidebarMobile
+            drawerWidth={drawerWidthMobile}
+            stateDrawer={stateDrawer}
+            closeDrawer={closeDrawer}
+          />
+
           <Box
             component="main"
             sx={{
               flexGrow: 1,
               bgcolor: 'background.default',
               p: 2,
-              minWidth: `100% - ${drawerWidth}px`,
+              width: { xs: '100%', md: `100% - ${drawerWidth}px` },
+              marginBottom: { xs: '168px', md: '134px' },
             }}
           >
             <Outlet />
@@ -72,6 +55,11 @@ const DashboardLayout = () => {
         </Box>
         <Box sx={{ zIndex: '20', bgcolor: 'background.default' }}>
           <MusicPlayer trackId={3135556} />
+          <TabBar
+            stateDrawer={stateDrawer}
+            openDrawer={openDrawer}
+            closeDrawer={closeDrawer}
+          />
         </Box>
       </Box>
     </MusicPlayerProvider>

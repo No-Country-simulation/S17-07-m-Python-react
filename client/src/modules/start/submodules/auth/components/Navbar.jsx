@@ -1,15 +1,8 @@
-import {
-  AppBar,
-  Avatar,
-  Box,
-  Button,
-  Grid,
-  Toolbar,
-  Typography,
-} from '@mui/material';
+import { AppBar, Box, Button, Grid, Toolbar } from '@mui/material';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
+import { Logo } from '../../../../dashboard/components/Logo';
 
 export const Navbar = () => {
   const location = useLocation();
@@ -20,32 +13,7 @@ export const Navbar = () => {
     <Box sx={{ flexGrow: 1, height: '10vh' }}>
       <AppBar position="static">
         <Toolbar sx={{ padding: 2, bgcolor: 'background.default' }}>
-          <Avatar alt="Jilguero logo" src="/logo.svg" />
-          <Box>
-            <Typography
-              variant="h6"
-              component="div"
-              sx={{
-                fontSize: '0.8rem',
-                marginLeft: 1,
-                marginBottom: 0,
-              }}
-            >
-              Jilguero
-              <Typography
-                variant="body2"
-                component="div"
-                sx={{
-                  fontSize: '0.6rem',
-                  marginLeft: '50%',
-                  marginTop: -1,
-                  color: 'text.secondary',
-                }}
-              >
-                .com
-              </Typography>
-            </Typography>
-          </Box>
+          <Logo />
           <Box sx={{ flexGrow: 1 }}></Box>
           <Grid sx={{ display: 'flex', gap: 2 }}>
             <Button

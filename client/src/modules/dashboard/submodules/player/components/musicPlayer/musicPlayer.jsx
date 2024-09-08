@@ -84,7 +84,10 @@ const MusicPlayer = () => {
 
   return (
     <Box>
-      <AppBar position="fixed" sx={{ top: 'auto', bottom: 0 }}>
+      <AppBar
+        position="fixed"
+        sx={{ top: 'auto', bottom: { xs: '48px', md: 0 } }}
+      >
         <Toolbar sx={{ bgcolor: 'background.default', padding: 1 }}>
           {currentTrack && (
             <ReactPlayer
