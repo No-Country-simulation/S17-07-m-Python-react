@@ -37,6 +37,7 @@ const DashboardLayout = () => {
           <SidebarMobile
             drawerWidth={drawerWidthMobile}
             stateDrawer={stateDrawer}
+            closeDrawer={closeDrawer}
           />
 
           <Box
@@ -46,7 +47,7 @@ const DashboardLayout = () => {
               bgcolor: 'background.default',
               p: 2,
               width: { xs: '100%', md: `100% - ${drawerWidth}px` },
-              marginBottom: { xs: '160px', md: '134px' },
+              marginBottom: { xs: '168px', md: '134px' },
             }}
           >
             <Outlet />

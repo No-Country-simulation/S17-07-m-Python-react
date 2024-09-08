@@ -18,7 +18,7 @@ import { PeopleAlt } from '@mui/icons-material';
 import { Explore } from '@mui/icons-material';
 import { LibraryAdd } from '@mui/icons-material';
 
-export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
+export const SidebarMobile = ({ drawerWidth, stateDrawer, closeDrawer }) => {
   const location = useLocation();
 
   // Función para determinar si el botón está activo
@@ -49,11 +49,12 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
           flexDirection: 'column',
           gap: 1,
           overflowY: 'auto',
-          marginBottom: '160px',
+          marginBottom: '180px',
         }}
       >
         {/* Botón Home */}
         <ListItemButton
+          onClick={() => closeDrawer()}
           component={Link}
           to="/"
           sx={{
@@ -69,6 +70,7 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
 
         {/* Botón Escuchado recientemente */}
         <ListItemButton
+          onClick={() => closeDrawer()}
           component={Link}
           to="/recientes"
           sx={{
@@ -86,6 +88,7 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
 
         {/* Botón Artistas favoritos */}
         <ListItemButton
+          onClick={() => closeDrawer()}
           component={Link}
           to="/artistas-favoritos"
           sx={{
@@ -128,6 +131,7 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
 
         {/* Botón Tus me gusta (favoritos) */}
         <ListItemButton
+          onClick={() => closeDrawer()}
           component={Link}
           to="/favoritos"
           sx={{
@@ -143,6 +147,7 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
 
         {/* Botón Descubrir */}
         <ListItemButton
+          onClick={() => closeDrawer()}
           component={Link}
           to="/descubrir"
           sx={{
@@ -178,13 +183,14 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
 
         {/* Botón Crear una Playlist */}
         <ListItemButton
+          onClick={() => closeDrawer()}
           component={Link}
-          to="/crear-playlist"
+          to="/mis-playlists"
           sx={{
-            borderRight: isActive('/crear-playlist')
+            borderRight: isActive('/mis-playlists')
               ? '2px solid yellow'
               : 'none',
-            color: isActive('/crear-playlist')
+            color: isActive('/mis-playlists')
               ? 'secondary.main'
               : 'text.default',
           }}

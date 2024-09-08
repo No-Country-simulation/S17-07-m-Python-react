@@ -177,12 +177,12 @@ export const Sidebar = ({ drawerWidth }) => {
         {/* Botón Crear una Playlist */}
         <ListItemButton
           component={Link}
-          to="/crear-playlist"
+          to="/mis-playlists"
           sx={{
-            borderRight: isActive('/crear-playlist')
+            borderRight: isActive('/mis-playlists')
               ? '2px solid yellow'
               : 'none',
-            color: isActive('/crear-playlist')
+            color: isActive('/mis-playlists')
               ? 'secondary.main'
               : 'text.default',
           }}

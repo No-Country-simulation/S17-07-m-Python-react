@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
-import { Box, Button, Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { MusicPlayerContext } from '../submodules/playlists/services/store/player';
-import { TopBar } from '../components/TopBar';
+
+import { PanelLayout } from '../../../core/layouts/PanelLayout';
 
 export const HomePage = () => {
   const { setTrackId, setType } = useContext(MusicPlayerContext);
@@ -12,8 +13,8 @@ export const HomePage = () => {
   };
 
   return (
-    <Box>
-      <TopBar />
+    <PanelLayout>
+      <div>HomePage</div>
       <Stack spacing={1} alignItems="center">
         <Button
           variant="contained"
@@ -36,6 +37,6 @@ export const HomePage = () => {
           Play Playlist
         </Button>
       </Stack>
-    </Box>
+    </PanelLayout>
   );
 };

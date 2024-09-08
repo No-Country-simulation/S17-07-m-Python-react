@@ -1,9 +1,15 @@
 import { Search, Menu, House } from '@mui/icons-material';
 import { AppBar, Tab, Tabs } from '@mui/material';
 import React from 'react';
+import { useEffect } from 'react';
 
-export const TabBar = ({ openDrawer, closeDrawer }) => {
+export const TabBar = ({ stateDrawer, openDrawer, closeDrawer }) => {
   const [value, setValue] = React.useState(0);
+
+  useEffect(() => {
+    if (stateDrawer) setValue(2);
+    else setValue(0);
+  }, [stateDrawer]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
