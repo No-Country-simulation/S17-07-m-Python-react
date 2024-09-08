@@ -13,6 +13,7 @@ import { ExplorePage } from '../../modules/dashboard/submodules/recommendation/p
 import { MisPlaylistsPage } from '../../modules/dashboard/submodules/library/pages/MisPlaylistsPage';
 import { AlbumPage } from '../../modules/dashboard/submodules/playlists/pages/AlbumPage';
 import { PlaylistPage } from '../../modules/dashboard/submodules/playlists/pages/PlaylistPage';
+import { Navigate } from 'react-router-dom';
 
 function AppRoute() {
   return (
@@ -52,6 +53,8 @@ function AppRoute() {
           <Route path="/favoritos" element={<FavoritesPage />} />
           <Route path="/descubrir" element={<ExplorePage />} />
           <Route path="/mis-playlists" element={<MisPlaylistsPage />} />
+
+          <Route path="*" element={<Navigate to="/" />} />
         </Route>
       </Routes>
     </Router>
