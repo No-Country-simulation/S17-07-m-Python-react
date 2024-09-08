@@ -43,7 +43,15 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer }) => {
       <Toolbar>
         <Logo />
       </Toolbar>
-      <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <List
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+          overflowY: 'auto',
+          marginBottom: '160px',
+        }}
+      >
         {/* Botón Home */}
         <ListItemButton
           component={Link}

@@ -41,7 +41,15 @@ export const Sidebar = ({ drawerWidth }) => {
       <Toolbar>
         <Logo />
       </Toolbar>
-      <List sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+      <List
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 1,
+          overflowY: 'auto',
+          marginBottom: '134px',
+        }}
+      >
         {/* Botón Home */}
         <ListItemButton
           component={Link}
