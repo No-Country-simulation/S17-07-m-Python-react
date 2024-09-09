@@ -23,4 +23,5 @@ urlpatterns = [
     path("api/", include("saved.urls")),
     path("api/", include("history.urls")),
     path("api/", include("search.urls")),
+    path("api/", include("radio.urls")),
 ]
