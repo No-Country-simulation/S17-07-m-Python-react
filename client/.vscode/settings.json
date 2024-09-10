@@ -4,7 +4,8 @@
     "theme",
     "auth",
     "player",
-    "sidebar"
+    "sidebar",
+    "home"
   ],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,
