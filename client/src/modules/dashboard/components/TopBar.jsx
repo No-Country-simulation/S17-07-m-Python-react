@@ -5,8 +5,14 @@ import { MenuAccount } from './MenuAccount';
 
 export const TopBar = () => {
   return (
-    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-      <Stack>
+    <Box
+      sx={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}
+    >
+      <Stack sx={{ flexGrow: 1 }}>
         <InputSearch />
       </Stack>
       <Stack>

@@ -5,7 +5,8 @@
     "auth",
     "player",
     "sidebar",
-    "home"
+    "home",
+    "search"
   ],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,

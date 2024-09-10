@@ -176,6 +176,7 @@ Two custom themes are configured in Material UI using `createTheme`, with specif
 | Brown      | ![#f8ebd9](https://via.placeholder.com/15/f8ebd9/000000?text=+) `#f8ebd9` | ![#1E1E1E](https://via.placeholder.com/15/1E1E1E/000000?text=+) `#1E1E1E` |
 | White      | ![#F3E1C7](https://via.placeholder.com/15/F3E1C7/000000?text=+) `#F3E1C7` | ![#F3E1C7](https://via.placeholder.com/15/F3E1C7/000000?text=+) `#F3E1C7` |
 | Black      | ![#594539](https://via.placeholder.com/15/594539/000000?text=+) `#594539` | ![#594539](https://via.placeholder.com/15/594539/000000?text=+) `#594539` |
+| Gray       | ![#9A8B76](https://via.placeholder.com/15/9A8B76/000000?text=+) `#9A8B76` | ![#3D3C3D](https://via.placeholder.com/15/3D3C3D/000000?text=+) `#3D3C3D` |
 | Background | ![#FFF8ED](https://via.placeholder.com/15/FFF8ED/000000?text=+) `#FFF8ED` | ![#212121](https://via.placeholder.com/15/212121/000000?text=+) `#212121` |
 
 _For further color customization, refer to the [Material UI Color Playground](https://mui.com/material-ui/customization/color/#playground)._
