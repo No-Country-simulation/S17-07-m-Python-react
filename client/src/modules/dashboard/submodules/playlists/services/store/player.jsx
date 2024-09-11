@@ -48,7 +48,7 @@ export const MusicPlayerProvider = ({ children }) => {
           setPlaylistData(null);
         }
       } catch (error) {
-        new Error('Error fetching data from Deezer:', error);
+        throw new error('Error fetching data from Deezer:', error);
       }
     };
 
@@ -77,6 +77,14 @@ export const MusicPlayerProvider = ({ children }) => {
     }
   };
 
+  const selectTrack = (index) => {
+    if (type === 'playlist' || type === 'album') {
+      if (playlistData && index >= 0 && index < playlistData.length) {
+        setCurrentTrackIndex(index);
+      }
+    }
+  };
+
   const currentTrackData =
     type === 'playlist' || type === 'album'
       ? playlistData && playlistData.length > 0
@@ -91,10 +99,12 @@ export const MusicPlayerProvider = ({ children }) => {
         playlistData,
         nextTrack,
         previousTrack,
+        selectTrack,
         trackId,
         type,
         setTrackId,
         setType,
+        currentTrackIndex,
       }}
     >
       {children}
