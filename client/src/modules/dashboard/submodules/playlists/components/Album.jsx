@@ -90,6 +90,7 @@ function Album({ album, loading }) {
         width: '100%',
         height: { xs: `calc(100vh)`, md: `calc(100vh - 168px)` },
         marginTop: '-64px',
+        borderRadius: 4,
         ...backgroundStyle,
       }}
     >
@@ -142,13 +143,18 @@ function Album({ album, loading }) {
             </>
           ) : (
             <>
+              <Typography
+                variant="h6"
+                sx={{ color: 'secondary.main', textTransform: 'capitalize' }}
+              >
+                {album.type}
+              </Typography>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
                 {album.title}
               </Typography>
-              <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-                {album.albumNumber}
+              <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
+                {album.artist.name}
               </Typography>
-              <Typography variant="subtitle1">{album.artistName}</Typography>
             </>
           )}
         </Box>
