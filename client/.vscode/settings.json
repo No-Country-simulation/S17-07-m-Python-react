@@ -6,7 +6,8 @@
     "player",
     "sidebar",
     "home",
-    "search"
+    "search",
+    "album"
   ],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,
