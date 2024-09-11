@@ -62,8 +62,6 @@ export const MusicPlayerProvider = ({ children }) => {
           prevIndex + 1 < playlistData.length ? prevIndex + 1 : 0,
         );
       }
-    } else if (type === 'track') {
-      setTrackId((prevId) => prevId + 1);
     }
   };
 

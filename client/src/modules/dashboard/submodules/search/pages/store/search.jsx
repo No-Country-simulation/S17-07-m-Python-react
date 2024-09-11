@@ -1,9 +1,20 @@
 import React, { createContext, useContext, useState } from 'react';
+import { useCallback } from 'react';
 
 const SearchContext = createContext();
 
 export const SearchProvider = ({ children }) => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [searchText, setSearchText] = useState('');
+  const [results, setResults] = useState(null);
+
+  const updateSearchText = useCallback((text) => {
+    setSearchText(text);
+  }, []);
+
+  const updateResults = useCallback((data) => {
+    setResults(data);
+  }, []);
 
   const openSearch = () => {
     setIsSearchVisible(true);
@@ -14,7 +25,15 @@ export const SearchProvider = ({ children }) => {
 
   return (
     <SearchContext.Provider
-      value={{ isSearchVisible, openSearch, closeSearch }}
+      value={{
+        isSearchVisible,
+        openSearch,
+        closeSearch,
+        searchText,
+        updateSearchText,
+        results,
+        updateResults,
+      }}
     >
       {children}
     </SearchContext.Provider>

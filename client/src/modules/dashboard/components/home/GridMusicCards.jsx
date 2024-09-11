@@ -52,10 +52,10 @@ const GridMusicCards = ({ music, title }) => {
           {getFilteredMusic().map((play) => (
             <Box key={play.id} sx={{ flex: '0 0 auto' }}>
               <MusicCard
-                id={play.id}
-                type={'album'}
-                image={play.cover_medium}
-                title={play.title}
+                id={play.album.id}
+                type={play.album.type}
+                image={play.album.cover_medium}
+                title={play.album.title}
                 artist={play.artist.name}
               />
             </Box>
@@ -65,11 +65,11 @@ const GridMusicCards = ({ music, title }) => {
         <Grid container spacing={2} justifyContent={'space-between'}>
           {getFilteredMusic().map((play) => (
             <MusicCard
-              type={'album'}
               key={play.id}
-              id={play.id}
-              image={play.cover_medium}
-              title={play.title}
+              id={play.album.id}
+              type={play.album.type}
+              image={play.album.cover_medium}
+              title={play.album.title}
               artist={play.artist.name}
             />
           ))}

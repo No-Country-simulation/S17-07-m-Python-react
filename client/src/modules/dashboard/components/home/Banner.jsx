@@ -73,7 +73,7 @@ export const Banner = ({ album }) => {
             height: { xs: 300, sm: 150 },
             opacity: { xs: 0.4, sm: 1 },
           }}
-          image={album?.cover_medium || banner}
+          image={album.album?.cover_medium || banner}
           alt="Banner nuevos lanzamientos"
         />
       )}

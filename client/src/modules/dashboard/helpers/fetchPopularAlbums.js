@@ -10,7 +10,7 @@ export const fetchPopularAlbums = async (limit = 5) => {
         limit: limit,
       },
     });
-    return response.data.albums.data;
+    return response.data.tracks.data;
   } catch (error) {
     throw new error();
   }

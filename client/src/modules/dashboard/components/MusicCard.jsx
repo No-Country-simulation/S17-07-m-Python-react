@@ -13,9 +13,11 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { MusicPlayerContext } from '../submodules/playlists/services/store/player';
+import { useSearch } from '../submodules/search/pages/store/search';
 
 const MusicCard = ({ id, image, title, artist, type }) => {
   const { setTrackId, setType } = useContext(MusicPlayerContext);
+  const { updateSearchText } = useSearch();
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -25,6 +27,8 @@ const MusicCard = ({ id, image, title, artist, type }) => {
   };
 
   const handleCardClick = () => {
+    if (type === 'track') return;
+    updateSearchText('');
     navigate(`/${type}/${id}`);
   };
 

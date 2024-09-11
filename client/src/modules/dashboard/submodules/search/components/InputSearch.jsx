@@ -1,14 +1,51 @@
 import { Search as SearchIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Box, IconButton, InputBase, Paper } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useSearch } from '../pages/store/search';
+import { debounce } from 'lodash';
+import { searchMusic } from '../helpers/fetchSearch';
+import { useEffect } from 'react';
+import { useCallback } from 'react';
 
 export const InputSearch = () => {
-  const { isSearchVisible } = useSearch();
-  const [searchText, setSearchText] = useState('');
+  const { isSearchVisible, searchText, updateSearchText, updateResults } =
+    useSearch();
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const fetchSearchResults = useCallback(
+    debounce(async (query) => {
+      if (query.length === 0) {
+        updateResults(null);
+        return;
+      }
+
+      try {
+        const data = await searchMusic(query);
+        if (data.length === 0) {
+          updateResults([]);
+        } else {
+          updateResults(data);
+        }
+      } catch (error) {
+        updateResults(null);
+        throw (new 'Error fetching search results:'(), error);
+      }
+    }, 600),
+    [updateResults],
+  );
+
+  useEffect(() => {
+    fetchSearchResults(searchText);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchText]);
 
   const handleClearSearch = () => {
-    setSearchText('');
+    updateSearchText('');
+    updateResults(null);
+  };
+
+  const handleInputChange = (e) => {
+    updateSearchText(e.target.value);
   };
 
   return (
@@ -28,7 +65,7 @@ export const InputSearch = () => {
           <SearchIcon />
           <InputBase
             value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
+            onChange={handleInputChange}
             fullWidth
             sx={{ ml: 1, flex: 1 }}
             placeholder="Buscar por canción, artista, álbum, género, etc"
@@ -55,7 +92,7 @@ export const InputSearch = () => {
             zIndex: 9999,
             justifyContent: 'center',
             p: 2,
-            backdropFilter: 'blur(10px)',
+            backdropFilter: 'blur(8px)',
           }}
         >
           <Paper
@@ -72,7 +109,7 @@ export const InputSearch = () => {
             <SearchIcon />
             <InputBase
               value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
+              onChange={handleInputChange}
               fullWidth
               sx={{ ml: 1, flex: 1 }}
               placeholder="Buscar..."
@@ -82,7 +119,7 @@ export const InputSearch = () => {
                 onClick={handleClearSearch}
                 sx={{ margin: 0, padding: 0 }}
               >
-                <CloseIcon />{' '}
+                <CloseIcon />
               </IconButton>
             )}
           </Paper>

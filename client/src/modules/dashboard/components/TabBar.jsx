@@ -6,6 +6,7 @@ import { useSearch } from '../submodules/search/pages/store/search';
 export const TabBar = ({ stateDrawer, openDrawer, closeDrawer }) => {
   const [value, setValue] = React.useState(0);
   const { openSearch, closeSearch } = useSearch();
+  const { updateSearchText } = useSearch();
 
   useEffect(() => {
     if (stateDrawer) setValue(2);
@@ -22,6 +23,7 @@ export const TabBar = ({ stateDrawer, openDrawer, closeDrawer }) => {
     } else {
       closeDrawer();
       closeSearch();
+      updateSearchText('');
     }
   };
 
