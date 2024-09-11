@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import {
   Avatar,
   Box,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -11,13 +10,10 @@ import {
   Typography,
   Skeleton,
 } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { fetchPopularArtists } from '../../helpers/fetchPopularArtists';
 
 export const EmergingArtists = () => {
   const [artists, setArtists] = useState([]);
-  const [checkedArtists, setCheckedArtists] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,13 +32,6 @@ export const EmergingArtists = () => {
 
     loadArtists();
   }, []);
-
-  const handleCheckboxChange = (artistId) => {
-    setCheckedArtists((prev) => ({
-      ...prev,
-      [artistId]: !prev[artistId],
-    }));
-  };
 
   if (loading) {
     return (
@@ -84,28 +73,18 @@ export const EmergingArtists = () => {
           return (
             <ListItem
               key={artist.id}
-              secondaryAction={
-                <IconButton
-                  edge="end"
-                  onClick={() => handleCheckboxChange(artist.id)}
-                  aria-label="favorite"
-                >
-                  {checkedArtists[artist.id] ? (
-                    <FavoriteIcon />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
-                </IconButton>
-              }
               disablePadding
-              sx={{ mb: '4px' }}
+              sx={{
+                mb: '4px',
+                padding: '2px',
+                bgcolor: 'brown.main',
+                borderRadius: 2,
+              }}
             >
-              <ListItemButton sx={{ bgcolor: 'brown.main', borderRadius: 2 }}>
-                <ListItemAvatar>
-                  <Avatar alt={artist.name} src={artist.picture_medium} />
-                </ListItemAvatar>
-                <ListItemText id={labelId} primary={artist.name} />
-              </ListItemButton>
+              <ListItemAvatar>
+                <Avatar alt={artist.name} src={artist.picture_medium} />
+              </ListItemAvatar>
+              <ListItemText id={labelId} primary={artist.name} />
             </ListItem>
           );
         })}
