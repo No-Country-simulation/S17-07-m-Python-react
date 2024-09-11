@@ -1,9 +1,7 @@
 import { ThemeProvider } from '@emotion/react';
-import { CssBaseline } from '@mui/material';
-import { useState } from 'react';
+import { CssBaseline, Box } from '@mui/material';
+import { useState, useContext, createContext } from 'react';
 import { darkTheme, lightTheme } from './theme';
-import { useContext } from 'react';
-import { createContext } from 'react';
 
 const ThemeContext = createContext();
 
@@ -14,8 +12,14 @@ export const AppTheme = ({ children }) => {
   return (
     <ThemeContext.Provider value={{ darkMode, setDarkMode }}>
       <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
+        <Box
+          sx={{
+            transition: 'background-color 1s ease, color 1s ease',
+          }}
+        >
+          <CssBaseline />
+          {children}
+        </Box>
       </ThemeProvider>
     </ThemeContext.Provider>
   );

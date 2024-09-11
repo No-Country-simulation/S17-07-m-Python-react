@@ -14,14 +14,12 @@ import { Link } from 'react-router-dom';
 import { Home } from '@mui/icons-material';
 import { AccessTime } from '@mui/icons-material';
 import { Favorite } from '@mui/icons-material';
-import { PeopleAlt } from '@mui/icons-material';
 import { Explore } from '@mui/icons-material';
 import { LibraryAdd } from '@mui/icons-material';
 
 export const Sidebar = ({ drawerWidth }) => {
   const location = useLocation();
 
-  // Función para determinar si el botón está activo
   const isActive = (path) => location.pathname === path;
   return (
     <Drawer
@@ -78,27 +76,6 @@ export const Sidebar = ({ drawerWidth }) => {
             <AccessTime />
             <Typography sx={{ fontSize: '16px' }}>
               Escuchados recientemente
-            </Typography>
-          </Box>
-        </ListItemButton>
-
-        {/* Botón Artistas favoritos */}
-        <ListItemButton
-          component={Link}
-          to="/artistas-favoritos"
-          sx={{
-            borderRight: isActive('/artistas-favoritos')
-              ? '2px solid yellow'
-              : 'none',
-            color: isActive('/artistas-favoritos')
-              ? 'secondary.main'
-              : 'text.default',
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <PeopleAlt />
-            <Typography sx={{ fontSize: '16px' }}>
-              Artistas favoritos
             </Typography>
           </Box>
         </ListItemButton>
