@@ -318,7 +318,7 @@ class DeleteFavorite(View):
     def delete(self, request, *args, **kwargs):
         favorite_id = kwargs.get('favorite_id', None)
 
-        favorite = Favorite.objects.filter(user=request.user, pk=favorite_id).first()
+        favorite = Favorite.objects.filter(user=request.user, element_id=favorite_id).first()
         if not favorite:
             return JsonResponse({'error': "favorite not found"}, status=404)
         
