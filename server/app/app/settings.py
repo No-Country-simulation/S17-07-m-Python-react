@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "radio",
     "users",
     "history",
+    "discover",
 ]
 
 MIDDLEWARE = [

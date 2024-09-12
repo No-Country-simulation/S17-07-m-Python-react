@@ -24,4 +24,5 @@ urlpatterns = [
     path("api/", include("history.urls")),
     path("api/", include("search.urls")),
     path("api/", include("radio.urls")),
+    path("api/", include("discover.urls")),
 ]
