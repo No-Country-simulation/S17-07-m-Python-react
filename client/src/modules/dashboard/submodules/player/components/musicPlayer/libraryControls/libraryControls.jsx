@@ -1,9 +1,10 @@
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import { Box, IconButton } from '@mui/material';
+import PlaylistMenu from '../../../../playlists/components/PlaylistMenu';
 
-export default function LibraryControls() {
+export default function LibraryControls({ props }) {
+  const { trackData } = props;
   return (
     <Box
       sx={{
@@ -17,9 +18,7 @@ export default function LibraryControls() {
         <FavoriteBorderOutlinedIcon sx={{ fontSize: '1.5rem' }} />
       </IconButton>
 
-      <IconButton>
-        <LibraryAddIcon sx={{ fontSize: '1.5rem' }} />
-      </IconButton>
+      <PlaylistMenu trackData={trackData} />
 
       <IconButton>
         <KeyboardArrowUpIcon sx={{ fontSize: '1.5rem' }} />

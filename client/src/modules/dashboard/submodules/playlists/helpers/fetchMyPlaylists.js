@@ -51,3 +51,21 @@ export const fetchDeleteMyPlaylist = async (playlistId) => {
     throw new Error(error);
   }
 };
+
+export const fetchUpdateSongsToMyPlaylist = async (playlistId, songs) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.put(
+      `${VITE_API_URL}/playlist/change/${playlistId}`,
+      { songs },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

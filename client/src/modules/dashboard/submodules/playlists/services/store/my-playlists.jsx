@@ -3,6 +3,7 @@ import {
   fetchGetMyPlaylists,
   fetchCreateMyPlaylist,
   fetchDeleteMyPlaylist,
+  fetchUpdateSongsToMyPlaylist,
 } from '../../helpers/fetchMyPlaylists';
 
 const PlaylistContext = createContext();
@@ -57,6 +58,16 @@ export const MyPlaylistProvider = ({ children }) => {
     }
   };
 
+  const handleChangeSongsToPlaylist = async (id, songs) => {
+    try {
+      await fetchUpdateSongsToMyPlaylist(id, songs);
+      const fetchedPlaylists = await fetchGetMyPlaylists();
+      setPlaylists(fetchedPlaylists);
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
   return (
     <PlaylistContext.Provider
       value={{
@@ -67,6 +78,7 @@ export const MyPlaylistProvider = ({ children }) => {
         deleteError,
         handleSavePlaylist,
         handleRemovePlaylist,
+        handleChangeSongsToPlaylist,
       }}
     >
       {children}
