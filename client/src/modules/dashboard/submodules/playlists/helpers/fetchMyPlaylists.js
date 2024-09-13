@@ -69,3 +69,21 @@ export const fetchUpdateSongsToMyPlaylist = async (playlistId, songs) => {
     throw new Error(error);
   }
 };
+
+export const fetchUpdateNameMyPlaylist = async (playlistId, playlistName) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await axios.patch(
+      `${VITE_API_URL}/playlist/update/${playlistId}`,
+      { name: playlistName },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    throw new Error(error);
+  }
+};

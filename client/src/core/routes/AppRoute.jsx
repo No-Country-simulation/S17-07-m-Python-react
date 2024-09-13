@@ -13,7 +13,6 @@ import { AlbumPage } from '../../modules/dashboard/submodules/playlists/pages/Al
 import { PlaylistPage } from '../../modules/dashboard/submodules/playlists/pages/PlaylistPage';
 import { Navigate } from 'react-router-dom';
 import { MyPlaylistPage } from '../../modules/dashboard/submodules/playlists/pages/MyPlaylistPage';
-import { MyPlaylistsPage } from '../../modules/dashboard/submodules/library/pages/MisPlaylistsPage';
 
 function AppRoute() {
   return (
@@ -51,11 +50,7 @@ function AppRoute() {
           <Route path="/recientes" element={<PlaylistRecentPage />} />
           <Route path="/favoritos" element={<FavoritesPage />} />
           <Route path="/descubrir" element={<ExplorePage />} />
-          <Route path="/mis-playlists">
-            <Route path="" element={<MyPlaylistsPage />} />
-            <Route path=":id" element={<MyPlaylistPage />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Route>
+          <Route path="/mis-playlists/:id" element={<MyPlaylistPage />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Route>
