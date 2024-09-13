@@ -1,10 +1,10 @@
 import React from 'react';
 import { PanelLayout } from '../../../../../core/layouts/PanelLayout';
 
-export const MisPlaylistsPage = () => {
+export const MyPlaylistsPage = () => {
   return (
     <PanelLayout>
-      <div>MisPlaylistsPage</div>
+      <div>MyPlaylistsPage</div>
     </PanelLayout>
   );
 };

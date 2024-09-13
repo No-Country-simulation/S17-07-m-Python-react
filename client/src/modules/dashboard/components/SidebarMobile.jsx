@@ -15,7 +15,7 @@ import { Home } from '@mui/icons-material';
 import { AccessTime } from '@mui/icons-material';
 import { Favorite } from '@mui/icons-material';
 import { Explore } from '@mui/icons-material';
-import { LibraryAdd } from '@mui/icons-material';
+import { CreatePlaylist } from '../submodules/playlists/components/CreatePlaylist';
 
 export const SidebarMobile = ({ drawerWidth, stateDrawer, closeDrawer }) => {
   const location = useLocation();
@@ -158,26 +158,9 @@ export const SidebarMobile = ({ drawerWidth, stateDrawer, closeDrawer }) => {
         </Typography>
 
         {/* Botón Crear una Playlist */}
-        <ListItemButton
-          onClick={() => closeDrawer()}
-          component={Link}
-          to="/mis-playlists"
-          sx={{
-            borderRight: isActive('/mis-playlists')
-              ? '2px solid yellow'
-              : 'none',
-            color: isActive('/mis-playlists')
-              ? 'secondary.main'
-              : 'text.default',
-          }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <LibraryAdd />
-            <Typography sx={{ fontSize: '16px' }}>
-              Crear una playlist
-            </Typography>
-          </Box>
-        </ListItemButton>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <CreatePlaylist />
+        </Box>
       </List>
     </Drawer>
   );
