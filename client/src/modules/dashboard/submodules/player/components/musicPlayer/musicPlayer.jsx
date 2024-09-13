@@ -149,7 +149,7 @@ const MusicPlayer = () => {
               volume={volume}
               handleVolumeChange={handleVolumeChange}
             />
-            <LibraryControls />
+            <LibraryControls props={{ trackData }} />
           </Stack>
         </Toolbar>
 

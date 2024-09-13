@@ -7,9 +7,10 @@ export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({ children }) => {
   const [trackId, setTrackId] = useState(null);
-  const [type, setType] = useState('playlist'); // 'track', 'album', or 'playlist'
+  const [type, setType] = useState('playlist'); // 'track', 'album', 'playlist' or 'my-playlist'
   const [trackData, setTrackData] = useState(null);
   const [playlistData, setPlaylistData] = useState(null);
+  const [myPlaylistData, setMyPlaylistData] = useState(null);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
 
   useEffect(() => {
@@ -30,6 +31,11 @@ export const MusicPlayerProvider = ({ children }) => {
           case 'track':
             url = `${VITE_API_MUSIC}/track/${trackId}`;
             break;
+          case 'my-playlist':
+            if (myPlaylistData) {
+              return;
+            }
+            return;
           default:
             throw new Error('Invalid type');
         }
@@ -48,47 +54,60 @@ export const MusicPlayerProvider = ({ children }) => {
           setPlaylistData(null);
         }
       } catch (error) {
-        throw new error('Error fetching data from Deezer:', error);
+        throw new Error(error);
       }
     };
 
     fetchData();
-  }, [trackId, type]);
+  }, [trackId, type, myPlaylistData]);
 
   const nextTrack = () => {
-    if (type === 'playlist' || type === 'album') {
-      if (playlistData && playlistData.length > 0) {
-        setCurrentTrackIndex((prevIndex) =>
-          prevIndex + 1 < playlistData.length ? prevIndex + 1 : 0,
-        );
-      }
+    const data = type === 'my-playlist' ? myPlaylistData : playlistData;
+    if (data && data.length > 0) {
+      setCurrentTrackIndex((prevIndex) =>
+        prevIndex + 1 < data.length ? prevIndex + 1 : 0,
+      );
     }
   };
 
   const previousTrack = () => {
-    if (type === 'playlist' || type === 'album') {
-      if (playlistData && playlistData.length > 0) {
-        setCurrentTrackIndex((prevIndex) =>
-          prevIndex - 1 >= 0 ? prevIndex - 1 : playlistData.length - 1,
-        );
-      }
-    } else if (type === 'track') {
-      setTrackId((prevId) => (prevId > 0 ? prevId - 1 : prevId));
+    const data = type === 'my-playlist' ? myPlaylistData : playlistData;
+    if (data && data.length > 0) {
+      setCurrentTrackIndex((prevIndex) =>
+        prevIndex - 1 >= 0 ? prevIndex - 1 : data.length - 1,
+      );
     }
   };
 
   const selectTrack = (index) => {
-    if (type === 'playlist' || type === 'album') {
-      if (playlistData && index >= 0 && index < playlistData.length) {
-        setCurrentTrackIndex(index);
-      }
+    const data = type === 'my-playlist' ? myPlaylistData : playlistData;
+    if (data && index >= 0 && index < data.length) {
+      setCurrentTrackIndex(index);
+    }
+  };
+
+  const addToMyPlaylist = async (trackIds) => {
+    try {
+      const trackDetailsPromises = trackIds.map((id) =>
+        axios.get(`${VITE_API_MUSIC}/track/${id}`),
+      );
+      const tracks = await Promise.all(trackDetailsPromises);
+      setMyPlaylistData(tracks.map((response) => response.data));
+      setType('my-playlist');
+      setTrackData(null);
+      setCurrentTrackIndex(0);
+    } catch (error) {
+      throw new Error(error);
     }
   };
 
   const currentTrackData =
-    type === 'playlist' || type === 'album'
-      ? playlistData && playlistData.length > 0
-        ? playlistData[currentTrackIndex]
+    type === 'playlist' || type === 'album' || type === 'my-playlist'
+      ? (type === 'my-playlist' ? myPlaylistData : playlistData) &&
+        (playlistData || myPlaylistData).length > 0
+        ? (type === 'my-playlist' ? myPlaylistData : playlistData)[
+            currentTrackIndex
+          ]
         : null
       : trackData;
 
@@ -97,6 +116,7 @@ export const MusicPlayerProvider = ({ children }) => {
       value={{
         trackData: currentTrackData,
         playlistData,
+        myPlaylistData,
         nextTrack,
         previousTrack,
         selectTrack,
@@ -105,6 +125,8 @@ export const MusicPlayerProvider = ({ children }) => {
         setTrackId,
         setType,
         currentTrackIndex,
+        setTrackData,
+        addToMyPlaylist,
       }}
     >
       {children}
