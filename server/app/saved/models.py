@@ -14,7 +14,7 @@ class PlaylistUser(models.Model):
     
 class PlaylistSongs(models.Model):
     playlist = models.ForeignKey(PlaylistUser, on_delete=models.CASCADE)
-    song_id = models.PositiveIntegerField()
+    song_id = models.PositiveBigIntegerField()
     order  = models.PositiveSmallIntegerField()
 
     def __str__(self):
@@ -29,7 +29,7 @@ class Favorite(models.Model):
     ]
     
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    element_id = models.PositiveIntegerField()
+    element_id = models.PositiveBigIntegerField()
     category = models.SmallIntegerField(choices=OPTIONS)
     
     def __str__(self):
