@@ -112,7 +112,6 @@ function MyPlaylist({ playlist, loading }) {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          pt: 8,
           px: 2,
           flexDirection: { xs: 'column', md: 'row' },
         }}
@@ -122,14 +121,14 @@ function MyPlaylist({ playlist, loading }) {
             variant="rectangular"
             width={150}
             height={150}
-            sx={{ borderRadius: 2, mr: 3, mt: 4 }}
+            sx={{ borderRadius: 2, mr: 3, mt: 2 }}
           />
         ) : (
           <Box
             component="img"
             src={myPlaylistData?.[0]?.album?.cover_medium || myPlaylistImage}
             alt="Album Cover"
-            sx={{ width: 150, height: 150, borderRadius: 2, mr: 3, mt: 4 }}
+            sx={{ width: 150, height: 150, borderRadius: 2, mr: 3, mt: 2 }}
           />
         )}
         <Box>
