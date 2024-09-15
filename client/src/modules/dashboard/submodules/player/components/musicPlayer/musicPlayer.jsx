@@ -10,6 +10,7 @@ import { AppBar, Stack, Toolbar } from '@mui/material';
 import { VolumeSlider } from './musicControls/volumeSlider';
 import { TimeSliderMovil } from './musicControls/timeSliderMovil';
 import { MusicPlayerContext } from '../../../playlists/services/store/player';
+import { fetchAddHistory } from '../../../playlists/helpers/fetchHistory';
 
 const MusicPlayer = () => {
   const { trackData, nextTrack, previousTrack } =
@@ -82,6 +83,12 @@ const MusicPlayer = () => {
     setIsPlaying(true);
   };
 
+  useEffect(() => {
+    if (Math.round(currentTime) == 30 && repeat == 'off') {
+      fetchAddHistory(trackData.id);
+    }
+  }, [currentTime, trackData, repeat]);
+
   return (
     <Box>
       <AppBar
@@ -149,6 +156,7 @@ const MusicPlayer = () => {
               volume={volume}
               handleVolumeChange={handleVolumeChange}
             />
+
             <LibraryControls props={{ trackData }} />
           </Stack>
         </Toolbar>

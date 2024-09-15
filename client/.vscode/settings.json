@@ -8,7 +8,9 @@
     "home",
     "search",
     "album",
-    "explore"
+    "explore",
+    "recents",
+    "history"
   ],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,

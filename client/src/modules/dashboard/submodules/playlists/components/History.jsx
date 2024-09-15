@@ -1,45 +1,36 @@
-import React from 'react';
 import {
   Box,
-  Typography,
   IconButton,
+  Skeleton,
+  Table,
+  TableBody,
   TableCell,
   TableContainer,
-  Table,
   TableHead,
   TableRow,
-  TableBody,
-  Skeleton,
+  Typography,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { useTheme } from '@emotion/react';
-import { useEffect } from 'react';
-import { useContext } from 'react';
-import { MusicPlayerContext } from '../services/store/player';
+import React, { useEffect } from 'react';
 import { hexToRgba } from '../../../../../core/utils/hexToRgba';
+import { useTheme } from '@emotion/react';
+import { Favorite } from '@mui/icons-material';
+import { FavoriteBorder } from '@mui/icons-material';
+import { MusicPlayerContext } from '../../playlists/services/store/player';
+import { useContext } from 'react';
+import { PlayArrow } from '@mui/icons-material';
 import { formatDuration } from '../../../../../core/utils/formatDuration';
+import { AccessTime } from '@mui/icons-material';
 
-function Album({ album, loading }) {
-  const { setTrackId, setType, selectTrack, currentTrackIndex } =
+export const History = ({ history, loading }) => {
+  const { selectTrack, addToMyPlaylist, currentTrackIndex, myPlaylistData } =
     useContext(MusicPlayerContext);
-
-  const theme = useTheme();
-
-  useEffect(() => {
-    if (album) {
-      setTrackId(album.id);
-      setType('album');
-    }
-  }, [album, setTrackId, setType]);
-
   const [favorites, setFavorites] = React.useState([]);
   const [selectedTrack, setSelectedTrack] = React.useState(null);
   const [notification, setNotification] = React.useState(false);
 
+  const theme = useTheme();
   const backgroundStyle = {
-    backgroundImage: `linear-gradient(180deg, ${hexToRgba(theme.palette.background.default, 0.85)}, ${hexToRgba(theme.palette.brown.main, 0.85)}), url('${album?.cover_big}')`,
+    backgroundImage: `linear-gradient(180deg, ${hexToRgba(theme.palette.background.default, 0.85)}, ${hexToRgba(theme.palette.brown.main, 0.85)})`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
@@ -47,6 +38,18 @@ function Album({ album, loading }) {
     borderImage: `linear-gradient(45deg, ${hexToRgba(theme.palette.background.default, 0.5)}, ${hexToRgba(theme.palette.brown.main, 0.5)}) 1`,
     borderImageSlice: 1,
   };
+
+  useEffect(() => {
+    if (history?.history?.length) {
+      const trackIds = history.history
+        .sort((a, b) => b.order - a.order)
+        .slice(-5)
+
+        .map((track) => track.song_id);
+      addToMyPlaylist(trackIds);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [history]);
 
   const toggleFavorite = (trackNumber) => {
     if (favorites.includes(trackNumber)) {
@@ -64,9 +67,9 @@ function Album({ album, loading }) {
     }, 2000);
   };
 
-  const onSelectTrack = (trackNumber) => {
-    setSelectedTrack(trackNumber);
-    selectTrack(trackNumber);
+  const onSelectTrack = (trackIndex) => {
+    setSelectedTrack(trackIndex);
+    selectTrack(trackIndex);
   };
 
   return (
@@ -110,15 +113,12 @@ function Album({ album, loading }) {
             variant="rectangular"
             width={150}
             height={150}
-            sx={{ borderRadius: 2, mr: 3, mt: 4 }}
+            sx={{ borderRadius: 2, mr: 3, mt: 2 }}
           />
         ) : (
-          <Box
-            component="img"
-            src={album?.cover_medium}
-            alt="Album Cover"
-            sx={{ width: 150, height: 150, borderRadius: 2, mr: 3, mt: 4 }}
-          />
+          <Typography variant="h1">
+            <AccessTime sx={{ width: 150, height: 150, mt: 2 }} />
+          </Typography>
         )}
         <Box>
           {loading ? (
@@ -133,13 +133,14 @@ function Album({ album, loading }) {
                 variant="h6"
                 sx={{ color: 'secondary.main', textTransform: 'capitalize' }}
               >
-                {album.type}
+                ¡Recuerdos!
               </Typography>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                {album.title}
+                Escuchados recientemente
               </Typography>
               <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-                {album.artist.name}
+                Estos son los momentos y canciones que has coleccionado en tu
+                nido musical
               </Typography>
             </>
           )}
@@ -169,7 +170,7 @@ function Album({ album, loading }) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading || !Array.isArray(album?.tracks?.data)
+              {loading || !Array.isArray(history.history)
                 ? [...Array(5).keys()].map((index) => (
                     <TableRow key={index}>
                       <TableCell>
@@ -189,7 +190,7 @@ function Album({ album, loading }) {
                       </TableCell>
                     </TableRow>
                   ))
-                : (album?.tracks?.data || []).map((track, index) => (
+                : (myPlaylistData || []).map((track, index) => (
                     <TableRow
                       key={index}
                       sx={{
@@ -205,7 +206,7 @@ function Album({ album, loading }) {
                     >
                       <TableCell>
                         {currentTrackIndex === index ? (
-                          <PlayArrowIcon color="secondary" />
+                          <PlayArrow color="secondary" />
                         ) : (
                           <Typography>{index + 1}</Typography>
                         )}
@@ -247,20 +248,28 @@ function Album({ album, loading }) {
                           }}
                         >
                           {favorites.includes(track.id) ? (
-                            <FavoriteIcon />
+                            <Favorite />
                           ) : (
-                            <FavoriteBorderIcon />
+                            <FavoriteBorder />
                           )}
                         </IconButton>
                       </TableCell>
                     </TableRow>
                   ))}
+              {myPlaylistData?.length === 0 && !loading && (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Typography variant="h6" align="center">
+                      ¿Aún no has escuchado una canción completa? ¡Déjate
+                      llevar!
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
       </Box>
     </Box>
   );
-}
-
-export default Album;
+};
