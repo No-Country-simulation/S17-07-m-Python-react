@@ -30,17 +30,28 @@ class HistoryView(View):
         except ValueError:
             return JsonResponse({'error': 'song must be an int'}, status=400)
         
-        # Adds the song
-        song_history = History(user=request.user, song_id=song, order=1)
-        
-        # Saves the song and updates the history
-        try:
-            song_history.full_clean()
-            History.objects.filter(user=request.user).update(order=F('order') + 1)
-            History.objects.filter(order__gt=10).delete()
-            song_history.save()
-        except ValidationError as e:
-            return JsonResponse({'error': e.message_dict}, status=400)
+        # Checks if there is already in history
+        complete_history = History.objects.filter(user=request.user)
+        complete_history = set([song.song_id for song in complete_history])
+
+        if song in complete_history:
+            song_in_history = History.objects.filter(user=request.user, song_id=song).first()
+            History.objects.filter(user=request.user, order__lt=song_in_history.order).update(order=F('order') + 1)
+            song_in_history.order = 1
+            song_in_history.save()
+        else:
+
+            # Adds the song
+            song_history = History(user=request.user, song_id=song, order=1)
+            
+            # Saves the song and updates the history
+            try:
+                song_history.full_clean()
+                History.objects.filter(user=request.user).update(order=F('order') + 1)
+                History.objects.filter(order__gt=10).delete()
+                song_history.save()
+            except ValidationError as e:
+                return JsonResponse({'error': e.message_dict}, status=400)
         
         # response
         return JsonResponse({'status': 'succes'}, status=200)
