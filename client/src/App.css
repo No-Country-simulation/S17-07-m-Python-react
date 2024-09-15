@@ -1,4 +1,10 @@
 /* Contenedor principal */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
 .container {
   display: flex;
   flex-direction: column;
@@ -8,72 +14,44 @@
   width: 100vw;
   padding: 20px;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
-/* Información del álbum */
-.album-info {
+/* Información de "Tus me gusta" */
+.recent-list {
   display: flex;
   align-items: center;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  width: calc(100% - 40px);
-  max-width: 600px;
-  box-sizing: border-box;
+  width: 100%;
+  max-width: 500px; /* Asegura que el contenido tenga suficiente espacio */
+  margin: 5vh 0;
+  white-space: nowrap; /* Previene que el texto se divida en varias líneas */
 }
 
-.album-cover {
-  width: 220px;
-  height: 220px;
-  border-radius: 10px;
-  margin-right: 20px;
-}
-
-.album-details {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.album-name {
-  font-family: 'Roboto', sans-serif;
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-  text-align: left;
-  color: #7C6309;
-  padding: 0;
-  margin: 0;
-}
-
-.album-number {
-  font-family: 'Roboto', sans-serif;
-  font-size: 48px;
-  font-weight: 400;
-  line-height: 56px;
-  text-align: left;
+.recent-icon {
+  font-size: 10vw;
   color: #201E1C;
-  margin: 0;
+  margin: 20px;
 }
 
-.artist-name {
+.recent-text {
   font-family: 'Roboto', sans-serif;
-  font-size: 24px;
+  font-style: normal;
   font-weight: 400;
-  line-height: 32px;
-  text-align: left;
-  color: #474747;
-  margin: 0;
+  font-size: 3vw;
+  line-height: 1.2;
+  color: #201E1C;
+  margin-left: 10px;
+  white-space: nowrap; /* Asegura que el texto no se divida */
 }
 
 /* Contenedor de la lista de canciones */
 .track-list {
   width: 100%;
-  max-width: 100%;
   margin: 0 auto;
   border-radius: 10px;
   padding: 20px;
+  box-sizing: border-box;
+  flex: 1;
 }
 
 /* Encabezado de la lista de canciones */
@@ -81,7 +59,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 16px 0;
   width: 100%;
   border-bottom: 1px solid #554D00;
   margin-bottom: 8px;
@@ -92,26 +70,27 @@
 .track-header .header-artist,
 .track-header .header-duration {
   font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  font-size: 1.2rem;
   color: #474747;
-}
-
-.header-number {
-  width: 10px;
   text-align: center;
 }
 
+.header-number {
+  flex: 0.8; /* Reducir el espacio asignado */
+  text-align: left; /* Alinear a la izquierda */
+}
+
 .header-title {
-  width: 400px;
-  color: #201E1C;
+  flex: 1.1; /* Mantén este valor o ajusta según sea necesario */
 }
 
 .header-artist {
-  width: 250px;
+  flex: 4;
+  text-align: center;
 }
 
 .header-duration {
-  width: 60px;
+  flex: 1;
   text-align: center;
 }
 
@@ -127,23 +106,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px 20px;
+  padding: 16px 0;
   width: 100%;
   background: #F8EBD9;
   border-radius: 8px;
   margin-bottom: 8px;
   font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 17.58px;
   text-align: left;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.5s ease, color 0.5s ease;
 }
 
-/* Fila seleccionada: transición suave de fondo y color */
+/* Fila seleccionada */
 .track-row.selected {
   background-color: #e4cfb5;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* Mostrar ícono de PlayArrow cuando la fila está seleccionada */
@@ -151,13 +128,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
+  flex: 1;
   height: 30px;
 }
 
 .play-icon {
-  font-size: 34px !important;  /* Tamaño más grande para el ícono */
-  color: #7C6309;  /* Color solicitado */
+  font-size: 2rem !important;
+  color: #7C6309;
 }
 
 /* Cambiar el color del título cuando la fila está seleccionada */
@@ -171,36 +148,37 @@
 .track-artist,
 .track-duration {
   font-family: 'Roboto', sans-serif;
-  font-size: 15px;
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 17.58px;
   color: #474747;
+  text-align: left;
 }
 
 .track-number {
-  width: 15px;
+  flex: 1;
   text-align: center;
 }
 
 .track-title {
-  width: 400px;
-  color: #201E1C;
+  flex: 4;
 }
 
 .track-artist {
-  width: 250px;
+  flex: 3;
 }
 
 .track-duration {
-  width: 60px;
+  flex: 1;
   text-align: center;
+  margin-right: 10px;
 }
 
 /* Animación del corazón */
 .icon-heart {
-  font-size: 28px; /* Tamaño más grande para el corazón */
+  font-size: 1.75rem;
   cursor: pointer;
   transition: transform 0.3s ease-in-out, color 0.3s ease-in-out;
+  margin-right: 15px;
 }
 
 .icon-heart.animate-heart {
@@ -220,15 +198,15 @@
 }
 
 /* Responsividad */
-@media (max-width: 600px) {
-  .album-cover {
-    width: 100px;
-    height: 100px;
+@media (max-width: 768px) {
+  .recent-text {
+    font-size: 4vw;
+    font-weight: 500; /* Aumentar grosor en resoluciones pequeñas */
   }
 
   .track-header,
   .track-row {
-    padding: 10px;
+    padding: 10px 5%;
   }
 
   .header-number,
@@ -239,6 +217,28 @@
   .track-title,
   .track-artist,
   .track-duration {
-    font-size: 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .recent-icon {
+    font-size: 10vw; /* Reducir el ícono, pero mantenerlo más grande */
+  }
+
+  .recent-text {
+    font-size: 5.5vw; /* Letra más grande en resoluciones pequeñas */
+    font-weight: 600; /* Aumentar el grosor de la fuente */
+  }
+
+  .header-title,
+  .header-artist {
+    flex: 1;
+  }
+
+  .track-title,
+  .track-artist {
+    width: 100%;
+    font-size: 0.8rem;
   }
 }

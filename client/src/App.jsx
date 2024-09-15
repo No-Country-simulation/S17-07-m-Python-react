@@ -5,16 +5,10 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 
 function App() {
-  const albumInfo = {
-    albumName: "Album Name",
-    albumNumber: "1234",
-    artistName: "Artist Name",
-    albumCover: "https://res.cloudinary.com/dfulftofe/image/upload/v1725921237/bocanada-1024x931_dqcnpm.jpg",
-  };
-
-  const [favorites, setFavorites] = useState([]);
+  const [favorites, setFavorites] = useState([1, 2, 3]); // Todas las canciones marcadas inicialmente
   const [selectedTrack, setSelectedTrack] = useState(null);
   const [notification, setNotification] = useState(false);
+  const [notificationMessage, setNotificationMessage] = useState("");
 
   const tracks = [
     { number: 1, title: "Song One", artists: "Artist A", duration: "3:45" },
@@ -32,13 +26,15 @@ function App() {
   const toggleFavorite = (trackNumber) => {
     if (favorites.includes(trackNumber)) {
       setFavorites(favorites.filter((fav) => fav !== trackNumber));
+      showNotification("Se eliminó de tus favoritos");
     } else {
       setFavorites([...favorites, trackNumber]);
-      showNotification();
+      showNotification("Se ha añadido a favoritos");
     }
   };
 
-  const showNotification = () => {
+  const showNotification = (message) => {
+    setNotificationMessage(message);
     setNotification(true);
     setTimeout(() => {
       setNotification(false);
@@ -53,21 +49,13 @@ function App() {
     <div className="container" style={backgroundStyle}>
       {notification && (
         <div className="notification">
-          Se ha añadido a favoritos
+          {notificationMessage}
         </div>
       )}
 
-      <div className="album-info">
-        <img
-          src={albumInfo.albumCover}
-          alt="Album Cover"
-          className="album-cover"
-        />
-        <div className="album-details">
-          <p className="album-name">{albumInfo.albumName}</p>
-          <h3 className="album-number">{albumInfo.albumNumber}</h3>
-          <h5 className="artist-name">{albumInfo.artistName}</h5>
-        </div>
+      <div className="recent-list">
+        <FavoriteIcon className="recent-icon" style={{ fontSize: '128px', color: '#201E1C' }} />
+        <div className="recent-text" style={{ marginLeft: '10px' }}>Tus me gusta</div>
       </div>
 
       <div className="track-list">
@@ -106,7 +94,7 @@ function App() {
                 style={{ cursor: "pointer" }}
               >
                 {favorites.includes(track.number) ? (
-                  <FavoriteIcon style={{ color: "red" }} />
+                  <FavoriteIcon style={{ color: "black" }} />
                 ) : (
                   <FavoriteBorderIcon style={{ color: "#201E1C" }} />
                 )}
