@@ -22,11 +22,8 @@ import { PlayArrow } from '@mui/icons-material';
 import { formatDuration } from '../../../../../core/utils/formatDuration';
 
 export const Explore = ({ music, loading }) => {
-  const {
-    selectTrack,
-    addToMyPlaylist,
-    currentTrackIndex,
-  } = useContext(MusicPlayerContext);
+  const { selectTrack, addToMyPlaylist, currentTrackIndex } =
+    useContext(MusicPlayerContext);
   const [favorites, setFavorites] = React.useState([]);
   const [selectedTrack, setSelectedTrack] = React.useState(null);
   const [notification, setNotification] = React.useState(false);
@@ -44,7 +41,7 @@ export const Explore = ({ music, loading }) => {
 
   useEffect(() => {
     if (music) {
-      const trackIds = music.map((track) => track.id);      
+      const trackIds = music.map((track) => track.id);
       addToMyPlaylist(trackIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -235,8 +232,8 @@ export const Explore = ({ music, loading }) => {
                         }}
                       >
                         {track?.duration
-                            ? formatDuration(track.duration)
-                            : '00:00'}
+                          ? formatDuration(track.duration)
+                          : '00:00'}
                       </TableCell>
                       <TableCell>
                         <IconButton
@@ -252,17 +249,18 @@ export const Explore = ({ music, loading }) => {
                           )}
                         </IconButton>
                       </TableCell>
-                    </TableRow>              
-                  )) } 
-                  { music.length === 0 && !loading && (
-                    <TableRow>
-                      <TableCell colSpan={5}>
-                        <Typography variant="h6" align="center">
-                        ¿Aún no has escuchado una canción completa? ¡Déjate llevar!
-                        </Typography>
-                      </TableCell>
                     </TableRow>
-                  )}               
+                  ))}
+              {music.length === 0 && !loading && (
+                <TableRow>
+                  <TableCell colSpan={5}>
+                    <Typography variant="h6" align="center">
+                      ¿Aún no has escuchado una canción completa? ¡Déjate
+                      llevar!
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
             </TableBody>
           </Table>
         </TableContainer>
