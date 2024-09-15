@@ -18,6 +18,8 @@ import { useTheme } from '@emotion/react';
 import { useEffect } from 'react';
 import { useContext } from 'react';
 import { MusicPlayerContext } from '../services/store/player';
+import { hexToRgba } from '../../../../../core/utils/hexToRgba';
+import { formatDuration } from '../../../../../core/utils/formatDuration';
 
 function Album({ album, loading }) {
   const { setTrackId, setType, selectTrack, currentTrackIndex } =
@@ -31,22 +33,6 @@ function Album({ album, loading }) {
       setType('album');
     }
   }, [album, setTrackId, setType]);
-
-  const hexToRgba = (hex, alpha) => {
-    let r = 0,
-      g = 0,
-      b = 0;
-    if (hex.length === 4) {
-      r = parseInt(hex[1] + hex[1], 16);
-      g = parseInt(hex[2] + hex[2], 16);
-      b = parseInt(hex[3] + hex[3], 16);
-    } else if (hex.length === 7) {
-      r = parseInt(hex[1] + hex[2], 16);
-      g = parseInt(hex[3] + hex[4], 16);
-      b = parseInt(hex[5] + hex[6], 16);
-    }
-    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-  };
 
   const [favorites, setFavorites] = React.useState([]);
   const [selectedTrack, setSelectedTrack] = React.useState(null);
@@ -249,7 +235,9 @@ function Album({ album, loading }) {
                             theme.palette.secondary.main,
                         }}
                       >
-                        {track?.duration}
+                        {track?.duration
+                          ? formatDuration(track.duration)
+                          : '00:00'}
                       </TableCell>
                       <TableCell>
                         <IconButton

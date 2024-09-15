@@ -13,16 +13,16 @@ import {
 import React, { useEffect } from 'react';
 import { hexToRgba } from '../../../../../core/utils/hexToRgba';
 import { useTheme } from '@emotion/react';
-import ExploreIcon from '@mui/icons-material/Explore';
 import { Favorite } from '@mui/icons-material';
 import { FavoriteBorder } from '@mui/icons-material';
 import { MusicPlayerContext } from '../../playlists/services/store/player';
 import { useContext } from 'react';
 import { PlayArrow } from '@mui/icons-material';
 import { formatDuration } from '../../../../../core/utils/formatDuration';
+import { AccessTime } from '@mui/icons-material';
 
-export const Explore = ({ music, loading }) => {
-  const { selectTrack, addToMyPlaylist, currentTrackIndex } =
+export const History = ({ history, loading }) => {
+  const { selectTrack, addToMyPlaylist, currentTrackIndex, myPlaylistData } =
     useContext(MusicPlayerContext);
   const [favorites, setFavorites] = React.useState([]);
   const [selectedTrack, setSelectedTrack] = React.useState(null);
@@ -40,12 +40,16 @@ export const Explore = ({ music, loading }) => {
   };
 
   useEffect(() => {
-    if (music) {
-      const trackIds = music.map((track) => track.id);
+    if (history?.history?.length) {
+      const trackIds = history.history
+        .sort((a, b) => b.order - a.order)
+        .slice(-5)
+
+        .map((track) => track.song_id);
       addToMyPlaylist(trackIds);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [music]);
+  }, [history]);
 
   const toggleFavorite = (trackNumber) => {
     if (favorites.includes(trackNumber)) {
@@ -113,7 +117,7 @@ export const Explore = ({ music, loading }) => {
           />
         ) : (
           <Typography variant="h1">
-            <ExploreIcon sx={{ width: 150, height: 150, mt: 2 }} />
+            <AccessTime sx={{ width: 150, height: 150, mt: 2 }} />
           </Typography>
         )}
         <Box>
@@ -129,13 +133,14 @@ export const Explore = ({ music, loading }) => {
                 variant="h6"
                 sx={{ color: 'secondary.main', textTransform: 'capitalize' }}
               >
-                ¡Explora!
+                ¡Recuerdos!
               </Typography>
               <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
-                Descubrir
+                Escuchados recientemente
               </Typography>
               <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-                Deja que el canto de los pájaros inspire tu nueva playlist.
+                Estos son los momentos y canciones que has coleccionado en tu
+                nido musical
               </Typography>
             </>
           )}
@@ -165,7 +170,7 @@ export const Explore = ({ music, loading }) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {loading || !Array.isArray(music)
+              {loading || !Array.isArray(history.history)
                 ? [...Array(5).keys()].map((index) => (
                     <TableRow key={index}>
                       <TableCell>
@@ -185,7 +190,7 @@ export const Explore = ({ music, loading }) => {
                       </TableCell>
                     </TableRow>
                   ))
-                : (music || []).map((track, index) => (
+                : (myPlaylistData || []).map((track, index) => (
                     <TableRow
                       key={index}
                       sx={{
@@ -251,7 +256,7 @@ export const Explore = ({ music, loading }) => {
                       </TableCell>
                     </TableRow>
                   ))}
-              {music.length === 0 && !loading && (
+              {myPlaylistData?.length === 0 && !loading && (
                 <TableRow>
                   <TableCell colSpan={5}>
                     <Typography variant="h6" align="center">

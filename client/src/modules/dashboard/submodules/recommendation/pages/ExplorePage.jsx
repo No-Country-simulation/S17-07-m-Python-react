@@ -7,14 +7,13 @@ import { Alert } from '@mui/material';
 export const ExplorePage = () => {
   const [music, setMusic] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null); 
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const loadMusic = async () => {
       try {
         const musicData = await fetchMusicExplore();
-        setMusic(musicData.similar_songs);
-
+        setMusic(musicData.similar_songs.slice(-5));
       } catch (err) {
         setError(
           'Error al cargar la música. Por favor, inténtalo de nuevo más tarde.',
@@ -37,7 +36,6 @@ export const ExplorePage = () => {
       ) : (
         <Explore music={music} loading={loading} />
       )}
-      
     </PanelLayout>
   );
 };
