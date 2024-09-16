@@ -1,6 +1,5 @@
 import {
   Box,
-  IconButton,
   Skeleton,
   Table,
   TableBody,
@@ -14,19 +13,17 @@ import React, { useEffect } from 'react';
 import { hexToRgba } from '../../../../../core/utils/hexToRgba';
 import { useTheme } from '@emotion/react';
 import ExploreIcon from '@mui/icons-material/Explore';
-import { Favorite } from '@mui/icons-material';
-import { FavoriteBorder } from '@mui/icons-material';
 import { MusicPlayerContext } from '../../playlists/services/store/player';
 import { useContext } from 'react';
 import { PlayArrow } from '@mui/icons-material';
 import { formatDuration } from '../../../../../core/utils/formatDuration';
+import ToggleFavorite from '../../library/components/ToggleFavorite';
+import PlaylistMenu from '../../playlists/components/PlaylistMenu';
 
 export const Explore = ({ music, loading }) => {
   const { selectTrack, addToMyPlaylist, currentTrackIndex } =
     useContext(MusicPlayerContext);
-  const [favorites, setFavorites] = React.useState([]);
   const [selectedTrack, setSelectedTrack] = React.useState(null);
-  const [notification, setNotification] = React.useState(false);
 
   const theme = useTheme();
   const backgroundStyle = {
@@ -47,22 +44,6 @@ export const Explore = ({ music, loading }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [music]);
 
-  const toggleFavorite = (trackNumber) => {
-    if (favorites.includes(trackNumber)) {
-      setFavorites(favorites.filter((fav) => fav !== trackNumber));
-    } else {
-      setFavorites([...favorites, trackNumber]);
-      showNotification();
-    }
-  };
-
-  const showNotification = () => {
-    setNotification(true);
-    setTimeout(() => {
-      setNotification(false);
-    }, 2000);
-  };
-
   const onSelectTrack = (trackIndex) => {
     setSelectedTrack(trackIndex);
     selectTrack(trackIndex);
@@ -79,22 +60,6 @@ export const Explore = ({ music, loading }) => {
         ...backgroundStyle,
       }}
     >
-      {notification && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '16px',
-            right: '16px',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            color: 'white',
-            p: 2,
-            borderRadius: 1,
-          }}
-        >
-          Se ha añadido a favoritos
-        </Box>
-      )}
-
       <Box
         sx={{
           display: 'flex',
@@ -235,19 +200,9 @@ export const Explore = ({ music, loading }) => {
                           ? formatDuration(track.duration)
                           : '00:00'}
                       </TableCell>
-                      <TableCell>
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(track.id);
-                          }}
-                        >
-                          {favorites.includes(track.id) ? (
-                            <Favorite />
-                          ) : (
-                            <FavoriteBorder />
-                          )}
-                        </IconButton>
+                      <TableCell sx={{ display: 'flex' }}>
+                        <ToggleFavorite id={track?.id} />
+                        <PlaylistMenu id={track?.id} />
                       </TableCell>
                     </TableRow>
                   ))}

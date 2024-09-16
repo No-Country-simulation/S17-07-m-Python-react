@@ -14,9 +14,9 @@ export default function LibraryControls({ props }) {
         gap: 1,
       }}
     >
-      <ToggleFavorite id={trackData.id} />
+      <ToggleFavorite id={trackData?.id} />
 
-      <PlaylistMenu id={trackData.id} />
+      <PlaylistMenu id={trackData?.id} />
 
       <IconButton>
         <KeyboardArrowUpIcon sx={{ fontSize: '1.5rem' }} />

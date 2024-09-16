@@ -3,19 +3,24 @@ import { IconButton, Snackbar, Alert } from '@mui/material';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import FavoritesContext from '../services/store/favorites';
+import { useEffect } from 'react';
 
 const ToggleFavorite = ({ id }) => {
   const { favorites, handleAddToFavorites, handleRemoveFromFavorites } =
     useContext(FavoritesContext);
-  const [isFavorite, setIsFavorite] = useState(
-    favorites.some((fav) => fav.id === IDBOpenDBRequest),
-  );
+  const [isFavorite, setIsFavorite] = useState(false);
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarSeverity, setSnackbarSeverity] = useState('info');
 
-  const handleToggleFavorite = async () => {
+  useEffect(() => {
+    const isFavorite = favorites.some((fav) => fav.element_id == id);
+    setIsFavorite(isFavorite);
+  }, [favorites, id]);
+
+  const handleToggleFavorite = async (event) => {
+    event.stopPropagation();
     setLoading(true);
     try {
       if (isFavorite) {
@@ -54,7 +59,7 @@ const ToggleFavorite = ({ id }) => {
         open={snackbarOpen}
         autoHideDuration={2000}
         onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         sx={{
           '& .MuiSnackbarContent-root': {
             backgroundColor: 'green',
