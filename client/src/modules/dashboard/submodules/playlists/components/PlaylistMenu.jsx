@@ -72,10 +72,10 @@ const PlaylistMenu = ({ id }) => {
         }
       });
 
-      setSnackbarMessage('Playlists updated successfully');
+      setSnackbarMessage('Tus Playlists se actualizaron');
       setSnackbarSeverity('success');
     } catch (error) {
-      setSnackbarMessage('Error updating playlists');
+      setSnackbarMessage('Error actualizando playlists');
       setSnackbarSeverity('error');
       throw new Error(error);
     } finally {

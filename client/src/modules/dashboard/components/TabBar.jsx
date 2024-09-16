@@ -1,16 +1,18 @@
 import { Search, Menu, House } from '@mui/icons-material';
 import { AppBar, Tab, Tabs } from '@mui/material';
 import React, { useEffect } from 'react';
-import { useSearch } from '../submodules/search/pages/store/search';
+import { useSearch } from '../submodules/search/services/store/search';
 
 export const TabBar = ({ stateDrawer, openDrawer, closeDrawer }) => {
   const [value, setValue] = React.useState(0);
-  const { openSearch, closeSearch, updateSearchText, searchText } = useSearch();
+  const { openSearch, closeSearch, updateSearchText, isSearchVisible } =
+    useSearch();
 
   useEffect(() => {
     if (stateDrawer) setValue(2);
-    else if (searchText !== '') setValue(1);
-  }, [stateDrawer, searchText]);
+    else if (isSearchVisible) setValue(1);
+    else setValue(0);
+  }, [stateDrawer, isSearchVisible]);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
