@@ -9,10 +9,12 @@ import {
   FormControlLabel,
   Snackbar,
   Alert,
+  Fade,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { register } from '../services/register';
+import { useEffect } from 'react';
 
 const formInitialValue = {
   username: '',
@@ -31,6 +33,13 @@ export const RegisterForm = () => {
   const [snackbarSeverity, setSnackbarSeverity] = useState('info');
 
   const [formValues, setFormValues] = useState(formInitialValue);
+
+  const [fadeIn, setFadeIn] = useState(false);
+
+  useEffect(() => {
+    setFadeIn(true);
+  }, []);
+
   const [errors, setErrors] = useState({
     username: '',
     email: '',
@@ -138,146 +147,151 @@ export const RegisterForm = () => {
         height: '90vh',
       }}
     >
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{
-          width: '100%',
-          maxWidth: 400,
-          p: 3,
-          boxShadow: 3,
-          borderRadius: 2,
-          bgcolor: 'background.default',
-        }}
-      >
-        <Typography variant="h5" component="h1" gutterBottom>
-          Registrar
-        </Typography>
-        <TextField
-          fullWidth
-          label="Usuario"
-          variant="outlined"
-          margin="normal"
-          type="text"
-          placeholder="Usuario"
-          name="username"
-          value={formValues.username}
-          onChange={handleChange}
-          error={Boolean(errors.username)}
-          helperText={errors.username}
-        />
-        <TextField
-          fullWidth
-          label="Correo"
-          variant="outlined"
-          margin="normal"
-          type="email"
-          placeholder="mi-correo@gmail.com"
-          name="email"
-          value={formValues.email}
-          onChange={handleChange}
-          error={Boolean(errors.email)}
-          helperText={errors.email}
-        />
-        <Box sx={{ position: 'relative' }}>
-          <TextField
-            fullWidth
-            label="Contraseña"
-            variant="outlined"
-            margin="normal"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="**********"
-            name="password"
-            value={formValues.password}
-            onChange={handleChange}
-            error={Boolean(errors.password)}
-            helperText={errors.password}
-          />
-          <Button
-            sx={{
-              position: 'absolute',
-              right: 10,
-              top: '50%',
-              transform: 'translateY(-50%)',
-            }}
-            onClick={togglePassword}
-          >
-            {showPassword ? '🙈' : '👁️'}
-          </Button>
-        </Box>
-        <Box sx={{ position: 'relative' }}>
-          <TextField
-            fullWidth
-            label="Confirmar Contraseña"
-            variant="outlined"
-            margin="normal"
-            type={showPasswordConfirm ? 'text' : 'password'}
-            placeholder="**********"
-            name="confirmPassword"
-            value={formValues.confirmPassword}
-            onChange={handleChange}
-            error={Boolean(errors.confirmPassword)}
-            helperText={errors.confirmPassword}
-          />
-          <Button
-            sx={{
-              position: 'absolute',
-              right: 10,
-              top: '50%',
-              transform: 'translateY(-50%)',
-            }}
-            onClick={togglePasswordConfirm}
-          >
-            {showPasswordConfirm ? '🙈' : '👁️'}
-          </Button>
-        </Box>
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              name="termsAccepted"
-              checked={formValues.termsAccepted}
-              onChange={handleChange}
-            />
-          }
-          label={
-            <Typography variant="body2">
-              Acepto los{' '}
-              <Button variant="text" color="primary" onClick={handleOpenModal}>
-                términos y condiciones
-              </Button>
-            </Typography>
-          }
-        />
-        {errors.termsAccepted && (
-          <Typography color="error" variant="body2">
-            {errors.termsAccepted}
-          </Typography>
-        )}
-
-        <Button
-          fullWidth
-          variant="contained"
-          color="secondary"
-          sx={{ mt: 2 }}
-          type="submit"
+      <Fade in={fadeIn} timeout={1000}>
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            width: '100%',
+            maxWidth: 400,
+            p: 3,
+            boxShadow: 3,
+            borderRadius: 2,
+            bgcolor: 'background.default',
+          }}
         >
-          Crear cuenta
-        </Button>
-        <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
-          ¿Ya tienes cuenta?{' '}
-          <Button
-            component={RouterLink}
-            to="/login"
-            color="inherit"
-            variant="text"
-            sx={{ p: 1, textTransform: 'none' }}
-          >
-            Ingresar
-          </Button>
-        </Typography>
-      </Box>
+          <Typography variant="h5" component="h1" gutterBottom>
+            Registrar
+          </Typography>
+          <TextField
+            fullWidth
+            label="Usuario"
+            variant="outlined"
+            margin="normal"
+            type="text"
+            placeholder="Usuario"
+            name="username"
+            value={formValues.username}
+            onChange={handleChange}
+            error={Boolean(errors.username)}
+            helperText={errors.username}
+          />
+          <TextField
+            fullWidth
+            label="Correo"
+            variant="outlined"
+            margin="normal"
+            type="email"
+            placeholder="mi-correo@gmail.com"
+            name="email"
+            value={formValues.email}
+            onChange={handleChange}
+            error={Boolean(errors.email)}
+            helperText={errors.email}
+          />
+          <Box sx={{ position: 'relative' }}>
+            <TextField
+              fullWidth
+              label="Contraseña"
+              variant="outlined"
+              margin="normal"
+              type={showPassword ? 'text' : 'password'}
+              placeholder="**********"
+              name="password"
+              value={formValues.password}
+              onChange={handleChange}
+              error={Boolean(errors.password)}
+              helperText={errors.password}
+            />
+            <Button
+              sx={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+              }}
+              onClick={togglePassword}
+            >
+              {showPassword ? '🙈' : '👁️'}
+            </Button>
+          </Box>
+          <Box sx={{ position: 'relative' }}>
+            <TextField
+              fullWidth
+              label="Confirmar Contraseña"
+              variant="outlined"
+              margin="normal"
+              type={showPasswordConfirm ? 'text' : 'password'}
+              placeholder="**********"
+              name="confirmPassword"
+              value={formValues.confirmPassword}
+              onChange={handleChange}
+              error={Boolean(errors.confirmPassword)}
+              helperText={errors.confirmPassword}
+            />
+            <Button
+              sx={{
+                position: 'absolute',
+                right: 10,
+                top: '50%',
+                transform: 'translateY(-50%)',
+              }}
+              onClick={togglePasswordConfirm}
+            >
+              {showPasswordConfirm ? '🙈' : '👁️'}
+            </Button>
+          </Box>
 
+          <FormControlLabel
+            control={
+              <Checkbox
+                name="termsAccepted"
+                checked={formValues.termsAccepted}
+                onChange={handleChange}
+              />
+            }
+            label={
+              <Typography variant="body2">
+                Acepto los{' '}
+                <Button
+                  variant="text"
+                  color="primary"
+                  onClick={handleOpenModal}
+                >
+                  términos y condiciones
+                </Button>
+              </Typography>
+            }
+          />
+          {errors.termsAccepted && (
+            <Typography color="error" variant="body2">
+              {errors.termsAccepted}
+            </Typography>
+          )}
+
+          <Button
+            fullWidth
+            variant="contained"
+            color="secondary"
+            sx={{ mt: 2 }}
+            type="submit"
+          >
+            Crear cuenta
+          </Button>
+          <Typography variant="body2" sx={{ mt: 2, textAlign: 'center' }}>
+            ¿Ya tienes cuenta?{' '}
+            <Button
+              component={RouterLink}
+              to="/login"
+              color="inherit"
+              variant="text"
+              sx={{ p: 1, textTransform: 'none' }}
+            >
+              Ingresar
+            </Button>
+          </Typography>
+        </Box>
+      </Fade>
       <Modal open={modalOpen} onClose={handleCloseModal}>
         <Box
           sx={{
@@ -322,6 +336,7 @@ export const RegisterForm = () => {
         open={snackbarOpen}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
+        TransitionComponent={Fade}
       >
         <Alert
           onClose={handleCloseSnackbar}

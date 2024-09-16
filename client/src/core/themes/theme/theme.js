@@ -24,6 +24,9 @@ export const lightTheme = createTheme({
     black: {
       main: '#594539',
     },
+    grey: {
+      main: '#9A8B76',
+    },
     background: {
       default: '#FFF8ED',
     },
@@ -53,6 +56,9 @@ export const darkTheme = createTheme({
     },
     black: {
       main: '#594539',
+    },
+    grey: {
+      main: '#3D3C3D',
     },
     background: {
       default: '#212121',
