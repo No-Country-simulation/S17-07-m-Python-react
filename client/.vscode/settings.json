@@ -10,7 +10,8 @@
     "album",
     "explore",
     "recents",
-    "history"
+    "history",
+    "favorites"
   ],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,

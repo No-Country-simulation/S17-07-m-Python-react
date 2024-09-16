@@ -14,8 +14,6 @@ import {
   Button,
   Grid,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -26,6 +24,8 @@ import myPlaylistImage from '../../../../../core/assets/my-playlist.svg';
 import { hexToRgba } from '../../../../../core/utils/hexToRgba';
 import PlaylistContext from '../services/store/my-playlists';
 import { formatDuration } from '../../../../../core/utils/formatDuration';
+import ToggleFavorite from '../../library/components/ToggleFavorite';
+import PlaylistMenu from './PlaylistMenu';
 
 function MyPlaylist({ playlist, loading }) {
   const { myPlaylistData, selectTrack, currentTrackIndex, addToMyPlaylist } =
@@ -34,9 +34,7 @@ function MyPlaylist({ playlist, loading }) {
 
   const theme = useTheme();
 
-  const [favorites, setFavorites] = useState([]);
   const [selectedTrack, setSelectedTrack] = useState(null);
-  const [notification, setNotification] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [playlistName, setPlaylistName] = useState('');
@@ -66,16 +64,6 @@ function MyPlaylist({ playlist, loading }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playlist]);
 
-  const toggleFavorite = (trackId) => {
-    setFavorites((prev) =>
-      prev.includes(trackId)
-        ? prev.filter((id) => id !== trackId)
-        : [...prev, trackId],
-    );
-    setNotification(true);
-    setTimeout(() => setNotification(false), 2000);
-  };
-
   const onSelectTrack = (trackIndex) => {
     setSelectedTrack(trackIndex);
     selectTrack(trackIndex);
@@ -92,22 +80,6 @@ function MyPlaylist({ playlist, loading }) {
 
   return (
     <Box sx={{ ...backgroundStyle, p: 0, width: '100%', height: '100%' }}>
-      {notification && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 16,
-            right: 16,
-            bgcolor: 'rgba(0,0,0,0.7)',
-            color: 'white',
-            p: 2,
-            borderRadius: 1,
-          }}
-        >
-          Añadido a favoritos
-        </Box>
-      )}
-
       <Box
         sx={{
           display: 'flex',
@@ -295,19 +267,9 @@ function MyPlaylist({ playlist, loading }) {
                             ? formatDuration(track.duration)
                             : '00:00'}
                         </TableCell>
-                        <TableCell>
-                          <IconButton
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              toggleFavorite(track.id);
-                            }}
-                          >
-                            {favorites.includes(track.id) ? (
-                              <FavoriteIcon />
-                            ) : (
-                              <FavoriteBorderIcon />
-                            )}
-                          </IconButton>
+                        <TableCell sx={{ display: 'flex' }}>
+                          <ToggleFavorite id={track?.id} />
+                          <PlaylistMenu id={track?.id} />
                         </TableCell>
                       </TableRow>
                     );
