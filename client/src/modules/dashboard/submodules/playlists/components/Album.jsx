@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Box,
   Typography,
-  IconButton,
   TableCell,
   TableContainer,
   Table,
@@ -11,8 +10,6 @@ import {
   TableBody,
   Skeleton,
 } from '@mui/material';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { useTheme } from '@emotion/react';
 import { useEffect } from 'react';
@@ -20,6 +17,8 @@ import { useContext } from 'react';
 import { MusicPlayerContext } from '../services/store/player';
 import { hexToRgba } from '../../../../../core/utils/hexToRgba';
 import { formatDuration } from '../../../../../core/utils/formatDuration';
+import ToggleFavorite from '../../library/components/ToggleFavorite';
+import PlaylistMenu from './PlaylistMenu';
 
 function Album({ album, loading }) {
   const { setTrackId, setType, selectTrack, currentTrackIndex } =
@@ -34,9 +33,7 @@ function Album({ album, loading }) {
     }
   }, [album, setTrackId, setType]);
 
-  const [favorites, setFavorites] = React.useState([]);
   const [selectedTrack, setSelectedTrack] = React.useState(null);
-  const [notification, setNotification] = React.useState(false);
 
   const backgroundStyle = {
     backgroundImage: `linear-gradient(180deg, ${hexToRgba(theme.palette.background.default, 0.85)}, ${hexToRgba(theme.palette.brown.main, 0.85)}), url('${album?.cover_big}')`,
@@ -46,22 +43,6 @@ function Album({ album, loading }) {
     border: '-8px solid transparent',
     borderImage: `linear-gradient(45deg, ${hexToRgba(theme.palette.background.default, 0.5)}, ${hexToRgba(theme.palette.brown.main, 0.5)}) 1`,
     borderImageSlice: 1,
-  };
-
-  const toggleFavorite = (trackNumber) => {
-    if (favorites.includes(trackNumber)) {
-      setFavorites(favorites.filter((fav) => fav !== trackNumber));
-    } else {
-      setFavorites([...favorites, trackNumber]);
-      showNotification();
-    }
-  };
-
-  const showNotification = () => {
-    setNotification(true);
-    setTimeout(() => {
-      setNotification(false);
-    }, 2000);
   };
 
   const onSelectTrack = (trackNumber) => {
@@ -80,22 +61,6 @@ function Album({ album, loading }) {
         ...backgroundStyle,
       }}
     >
-      {notification && (
-        <Box
-          sx={{
-            position: 'absolute',
-            top: '16px',
-            right: '16px',
-            backgroundColor: 'rgba(0,0,0,0.7)',
-            color: 'white',
-            p: 2,
-            borderRadius: 1,
-          }}
-        >
-          Se ha añadido a favoritos
-        </Box>
-      )}
-
       <Box
         sx={{
           display: 'flex',
@@ -239,19 +204,9 @@ function Album({ album, loading }) {
                           ? formatDuration(track.duration)
                           : '00:00'}
                       </TableCell>
-                      <TableCell>
-                        <IconButton
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleFavorite(track.id);
-                          }}
-                        >
-                          {favorites.includes(track.id) ? (
-                            <FavoriteIcon />
-                          ) : (
-                            <FavoriteBorderIcon />
-                          )}
-                        </IconButton>
+                      <TableCell sx={{ display: 'flex' }}>
+                        <ToggleFavorite id={track?.id} />
+                        <PlaylistMenu id={track?.id} />
                       </TableCell>
                     </TableRow>
                   ))}
