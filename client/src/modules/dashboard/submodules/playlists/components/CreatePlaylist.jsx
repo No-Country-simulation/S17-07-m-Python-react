@@ -11,6 +11,11 @@ import {
   ListItemButton,
   Skeleton,
   Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from '@mui/material';
 import { LibraryAdd, Save, Delete } from '@mui/icons-material';
 import { TransitionGroup } from 'react-transition-group';
@@ -30,7 +35,20 @@ export const CreatePlaylist = () => {
 
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [playlistName, setPlaylistName] = useState('');
+  const [dialogOpenId, setDialogOpenId] = useState(null);
   const isActive = (path) => location.pathname === path;
+
+  const handleClickOpen = (event, id) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDialogOpenId(id);
+  };
+
+  const handleClose = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setDialogOpenId(null);
+  };
 
   const handleToggleInput = () => {
     setIsInputVisible((prev) => !prev);
@@ -46,6 +64,7 @@ export const CreatePlaylist = () => {
     event.preventDefault();
     event.stopPropagation();
     await handleRemovePlaylist(id);
+    setDialogOpenId(null);
   };
 
   return (
@@ -156,13 +175,46 @@ export const CreatePlaylist = () => {
                   >
                     <ListItemText primary={playlist.name} />
                     {!isActive(`/mis-playlists/${playlist.id}`) && (
-                      <IconButton
-                        onClick={(event) =>
-                          onRemovePlaylist(event, playlist.id)
-                        }
-                      >
-                        <Delete />
-                      </IconButton>
+                      <>
+                        <IconButton
+                          onClick={(event) =>
+                            handleClickOpen(event, playlist.id)
+                          }
+                        >
+                          <Delete />
+                        </IconButton>
+
+                        <Dialog
+                          open={dialogOpenId === playlist.id}
+                          onClose={handleClose}
+                          aria-labelledby="alert-dialog-title"
+                          aria-describedby="alert-dialog-description"
+                        >
+                          <DialogTitle id="alert-dialog-title">
+                            {'Confirmar eliminación'}
+                          </DialogTitle>
+                          <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                              ¿Estás seguro de que deseas eliminar esta
+                              playlist?
+                            </DialogContentText>
+                          </DialogContent>
+                          <DialogActions>
+                            <Button onClick={handleClose} color="primary">
+                              Cancelar
+                            </Button>
+                            <Button
+                              onClick={(event) =>
+                                onRemovePlaylist(event, playlist.id)
+                              }
+                              color="primary"
+                              autoFocus
+                            >
+                              Eliminar
+                            </Button>
+                          </DialogActions>
+                        </Dialog>
+                      </>
                     )}
                   </ListItemButton>
                 </Collapse>

@@ -1,11 +1,12 @@
 import { Search as SearchIcon, Close as CloseIcon } from '@mui/icons-material';
 import { Box, IconButton, InputBase, Paper } from '@mui/material';
 import React from 'react';
-import { useSearch } from '../pages/store/search';
+
 import { debounce } from 'lodash';
 import { searchMusic } from '../helpers/fetchSearch';
 import { useEffect } from 'react';
 import { useCallback } from 'react';
+import { useSearch } from '../services/store/search';
 
 export const InputSearch = () => {
   const { isSearchVisible, searchText, updateSearchText, updateResults } =

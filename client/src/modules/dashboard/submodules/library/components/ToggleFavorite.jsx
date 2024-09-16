@@ -25,15 +25,15 @@ const ToggleFavorite = ({ id }) => {
     try {
       if (isFavorite) {
         await handleRemoveFromFavorites(id);
-        setSnackbarMessage('Removed from favorites');
+        setSnackbarMessage('Eliminado de favoritos');
       } else {
         await handleAddToFavorites(id);
-        setSnackbarMessage('Added to favorites');
+        setSnackbarMessage('Agregado a favoritos');
       }
       setIsFavorite(!isFavorite);
       setSnackbarSeverity('success');
     } catch (error) {
-      setSnackbarMessage('Error toggling favorite');
+      setSnackbarMessage('Error cambiando favoritos');
       setSnackbarSeverity('error');
       throw new Error(error);
     } finally {
