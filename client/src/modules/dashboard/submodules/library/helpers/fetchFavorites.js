@@ -21,7 +21,7 @@ export const fetchAddToFavorites = async (id) => {
   try {
     const token = localStorage.getItem('token');
     const response = await axios.post(
-      `${VITE_API_URL}/favorite/add`,
+      `${VITE_API_URL}/favorite/create`,
       { element_id: id, category: 'song' },
       {
         headers: {
@@ -39,7 +39,7 @@ export const fetchRemoveFromFavorites = async (itemId) => {
   try {
     const token = localStorage.getItem('token');
     const response = await axios.delete(
-      `${VITE_API_URL}/favorites/remove/${itemId}`,
+      `${VITE_API_URL}/favorite/delete/${itemId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

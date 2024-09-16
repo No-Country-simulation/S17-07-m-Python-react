@@ -11,19 +11,19 @@ import {
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import PlaylistContext from '../services/store/my-playlists';
 
-const PlaylistMenu = ({ trackData }) => {
+const PlaylistMenu = ({ id }) => {
   const { playlists, handleChangeSongsToPlaylist } =
     useContext(PlaylistContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedPlaylists, setSelectedPlaylists] = useState([]);
 
   useEffect(() => {
-    if (!trackData) return;
+    if (!id) return;
     const initializedPlaylists = playlists.filter((playlist) =>
-      playlist.songs.some((song) => song.id === trackData.id),
+      playlist.songs.some((song) => song.id === id),
     );
     setSelectedPlaylists(initializedPlaylists);
-  }, [playlists, trackData]);
+  }, [playlists, id]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,9 +45,9 @@ const PlaylistMenu = ({ trackData }) => {
     // Actualizar playlists seleccionadas
     selectedPlaylists.forEach((playlist) => {
       const existingSongIds = playlist.songs.map((song) => song.id);
-      const updatedSongIds = existingSongIds.includes(trackData.id)
+      const updatedSongIds = existingSongIds.includes(id)
         ? existingSongIds
-        : [...existingSongIds, trackData.id];
+        : [...existingSongIds, id];
 
       handleChangeSongsToPlaylist(playlist.id, updatedSongIds);
     });
@@ -56,9 +56,7 @@ const PlaylistMenu = ({ trackData }) => {
     playlists.forEach((playlist) => {
       if (!selectedPlaylists.find((p) => p.id === playlist.id)) {
         const existingSongIds = playlist.songs.map((song) => song.id);
-        const updatedSongIds = existingSongIds.filter(
-          (id) => id !== trackData.id,
-        );
+        const updatedSongIds = existingSongIds.filter((id) => id !== id);
 
         handleChangeSongsToPlaylist(playlist.id, updatedSongIds);
       }
@@ -70,7 +68,7 @@ const PlaylistMenu = ({ trackData }) => {
 
   return (
     <div>
-      <IconButton onClick={handleClick} disabled={!trackData}>
+      <IconButton onClick={handleClick} disabled={!id}>
         <LibraryAddIcon sx={{ fontSize: '1.5rem' }} />
       </IconButton>
       <Menu
