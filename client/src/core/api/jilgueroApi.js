@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getEnvVariables } from '../helpers';
+import { getEnvVariables } from '../utils/getEnvVariables';
 
 const { VITE_API_URL } = getEnvVariables();
 const jilgueroApi = axios.create({

@@ -85,7 +85,7 @@ const MusicPlayer = () => {
 
   useEffect(() => {
     if (Math.round(currentTime) == 30 && repeat == 'off') {
-      fetchAddHistory(trackData.id);
+      if (trackData) fetchAddHistory(trackData.id);
     }
   }, [currentTime, trackData, repeat]);
 
