@@ -36,7 +36,7 @@ const PlaylistMenu = ({ id }) => {
   };
 
   const handleClose = (event) => {
-    event.stopPropagation();
+    if (event) event.stopPropagation();
     setAnchorEl(null);
   };
 
