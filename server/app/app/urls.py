@@ -25,5 +25,5 @@ urlpatterns = [
     path("api/", include("search.urls")),
     path("api/", include("radio.urls")),
     path("api/", include("discover.urls")),
-    path('ia/', include('ia.urls')),
+    path('api/', include('ia.urls')),
 ]
