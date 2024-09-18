@@ -188,7 +188,6 @@ def buscar_en_deezer(nombre_cancion, artista):
 @method_decorator(csrf_exempt, name="dispatch")
 class buscar_canciones_deezer(View):
 
-    @jwt_required
     def post(self, request, *args, **kwargs):
 
         try:
@@ -199,7 +198,7 @@ class buscar_canciones_deezer(View):
         texto_usuario = body.get("texto")
         emocion = extraer_emocion(texto_usuario)
         intencion = extraer_intencion(texto_usuario)
-        caracteristicas_emocion = modelo.predict([texto_usuario])
+        caracteristicas_emocion = caracteristicas_por_emocion.get(emocion)
 
         if caracteristicas_emocion is None or len(caracteristicas_emocion) != 5:
             caracteristicas_emocion = caracteristicas_por_emocion.get(emocion) or caracteristicas_por_intencion.get(intencion)
