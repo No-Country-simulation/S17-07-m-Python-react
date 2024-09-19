@@ -12,7 +12,8 @@
     "recents",
     "history",
     "favorites",
-    "details"
+    "details",
+    "chatbot"
   ],
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,

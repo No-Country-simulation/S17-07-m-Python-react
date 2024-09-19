@@ -30,6 +30,8 @@ services:
       - db
     networks:
       - mynetwork
+    env_file:
+      - ./server/app/ia/api_flask/.env
     environment:
       - DATABASE_URL=postgres://myuser:mypassword@db:5432/mydatabase
       - POSTGRES_DB=mydatabase
