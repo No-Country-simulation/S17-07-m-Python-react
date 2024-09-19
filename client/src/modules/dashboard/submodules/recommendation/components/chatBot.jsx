@@ -1,43 +1,67 @@
-import React, { useEffect, useState } from 'react';
-import { Box, IconButton, TextField, InputAdornment,Typography } from '@mui/material';
-import { Send, Close } from '@mui/icons-material';
-
-import { SmartToy } from '@mui/icons-material';
+import React, { useState, useContext } from 'react';
+import {
+  Box,
+  IconButton,
+  TextField,
+  InputAdornment,
+  Typography,
+} from '@mui/material';
+import { Send, SmartToy, PlayCircle } from '@mui/icons-material';
+import { fetchMusicTherapy } from '../helpers/fetchMusicTherapy';
+import { MusicPlayerContext } from '../../playlists/services/store/player';
+import { useMessages } from '../services/store/messages';
 
 const ChatBot = () => {
-  const [messages, setMessages] = useState([]);
-  const [input, setInput] = useState('');
-  const [socket, setSocket] = useState(null);
+  const { messages, setMessages, input, setInput, loading, setLoading } =
+    useMessages();
 
-  useEffect (() => {
-    const ws = new WebSocket('');
-    setSocket(ws); 
+  const { setTrackId, setType } = useContext(MusicPlayerContext);
 
-    ws.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      setMessages((prevMessages) => [...prevMessages, message]);
-    };
+  useState(() => {
+    setMessages(messages);
+  }, [setMessages]);
 
-    ws.onclose = () => {
-      console.log('Conexión cerrada');
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, []);
-  
-
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (input.trim()) {
       const userMessage = { sender: 'user', text: input };
-      setMessages([...messages, userMessage]);
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
 
-      if (socket) {
-        socket.send(JSON.stringify(userMessage));
+      setLoading(true);
+
+      try {
+        const response = await fetchMusicTherapy(input);
+        const musicMessages = response.resultados
+          .filter((message) => message.preview)
+          .map((song) => ({
+            sender: 'bot',
+            text: `${song.nombre} - ${song.artista}`,
+            deezerLink: song.deezer_link,
+            preview: song.preview,
+          }));
+
+        setMessages((prevMessages) => [...prevMessages, ...musicMessages]);
+      } catch (error) {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          {
+            sender: 'bot',
+            text: 'Lo siento, no se encontró un estado de ánimo adecuado o hubo un error en la búsqueda.',
+          },
+        ]);
+        throw new Error(error);
+      } finally {
+        setLoading(false);
+        setInput('');
       }
+
       setInput('');
     }
+  };
+
+  const handlePlay = (url) => {
+    const trackNumber = url.split('/').pop();
+    setTrackId(trackNumber);
+    setType('track');
   };
 
   return (
@@ -46,8 +70,8 @@ const ChatBot = () => {
         width: '300px',
         height: '400px',
         display: 'flex',
-        flexDirection: 'column',  
-        bgcolor: '#1E1E1E', 
+        flexDirection: 'column',
+        bgcolor: 'background.default',
         borderRadius: '10px',
         boxShadow: 3,
       }}
@@ -60,38 +84,25 @@ const ChatBot = () => {
           alignItems: 'center',
           padding: '12px',
           borderBottom: '1px solid #444',
-          bgcolor: '#1E1E1E',
+          bgcolor: 'brown.main',
           color: 'white',
           borderRadius: '10px 20px 0 0',
         }}
       >
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <SmartToy sx={{ marginRight: '8px' }}/>
+          <SmartToy sx={{ marginRight: '8px' }} />
           <Typography variant="h6">IA chat</Typography>
         </Box>
-        <IconButton
-          onClick={onclose}
-          sx={{ color: 'white' }}
-        >
-          <Close />
-        </IconButton>
       </Box>
 
-
-
-      {/* Cuerpo dle chat */}
-      <Box sx={{ padding: '16px', flexGrow: 1 }}>
-        <Typography variant="body1" sx={{ marginBottom: '16px', color: 'white' }}>
-          ¡Hola! 😊 Soy tu asistente de música, ¿cómo te sientes hoy? Cuéntame un poco sobre tu estado de ánimo y crearé una playlist perfecta para ti. ¡Estoy listo para sorprenderte!
-        </Typography>
-
-        {/* Mostrar los mensajes del chat */}
+      {/* Cuerpo del chat */}
+      <Box sx={{ padding: '16px', flexGrow: 1, overflowY: 'auto' }}>
         {messages.map((message, index) => (
-          <Typography
+          <Box
             key={index}
             sx={{
               textAlign: message.sender === 'user' ? 'right' : 'left',
-              bgcolor: '#212121', 
+              bgcolor: 'brown.main',
               padding: '8px',
               borderRadius: '10px',
               color: 'white',
@@ -99,10 +110,49 @@ const ChatBot = () => {
               display: 'inline-block',
             }}
           >
-            <strong>{message.sender === 'user' ? 'Tú: ' : 'IA: '}</strong>
-            {message.text}
-          </Typography>
+            {message.sender === 'user' ? (
+              <Typography variant="body1">
+                <strong>Tú: </strong>
+                {message.text}
+              </Typography>
+            ) : (
+              <>
+                <Typography variant="body1">
+                  <strong>
+                    IA:
+                    {message.deezerLink && (
+                      <IconButton
+                        onClick={() => handlePlay(message.deezerLink)}
+                        color="secondary"
+                      >
+                        <PlayCircle />
+                      </IconButton>
+                    )}{' '}
+                  </strong>
+                  {message.text}
+                </Typography>
+              </>
+            )}
+          </Box>
         ))}
+
+        {/* Indicador de carga */}
+        {loading && (
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'end',
+              marginTop: '16px',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{ marginLeft: '8px', color: 'white' }}
+            >
+              Escribiendo{'.'.repeat((Math.floor(Date.now() / 500) % 3) + 1)}
+            </Typography>
+          </Box>
+        )}
       </Box>
 
       {/* Área para escribir mensajes */}
@@ -111,8 +161,8 @@ const ChatBot = () => {
           display: 'flex',
           alignItems: 'center',
           padding: '8px',
-          bgcolor: '#3d3c3d', 
-          borderRadius: '0 0 20px 20px', 
+          bgcolor: 'background.default',
+          borderRadius: '0 0 20px 20px',
         }}
       >
         <TextField
@@ -124,15 +174,15 @@ const ChatBot = () => {
           InputProps={{
             sx: {
               borderRadius: '20px',
-              bgcolor: '#3d3c3d',
-              color: 'white', 
+              bgcolor: 'background.default',
+              color: 'white',
             },
             endAdornment: (
               <InputAdornment position="end">
                 <IconButton
                   onClick={handleSendMessage}
                   sx={{
-                    color: 'black', 
+                    color: 'black',
                     marginRight: '4px',
                   }}
                 >
@@ -141,7 +191,7 @@ const ChatBot = () => {
               </InputAdornment>
             ),
           }}
-          sx={{ input: { color: 'white' } }} 
+          sx={{ input: { color: 'white' } }}
         />
       </Box>
     </Box>
