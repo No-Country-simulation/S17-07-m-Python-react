@@ -10,8 +10,18 @@ from django.views import View
 from functools import wraps
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
-from users.utils.decorators import jwt_required
 from sklearn.feature_extraction.text import TfidfVectorizer
+import spotipy
+from spotipy.oauth2 import SpotifyOAuth
+from spotipy.oauth2 import SpotifyClientCredentials
+from dotenv import load_dotenv
+import django
+
+load_dotenv()
+
+# Configura Django
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'app.settings')
+django.setup()
 
 # Configura las credenciales de la API de Spotify desde variables de entorno
 SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
@@ -124,6 +134,7 @@ def extraer_emocion(texto):
         for emocion, palabras in emociones_clave.items():
             if token.lemma_ in palabras:
                 return emocion
+    
     return "desconocida"
 
 def extraer_intencion(texto):
@@ -136,12 +147,21 @@ def extraer_intencion(texto):
 
 def authenticate_spotify():
     try:
+        client_id = os.getenv('SPOTIPY_CLIENT_ID')
+        client_secret = os.getenv('SPOTIPY_CLIENT_SECRET')
+
+        if not client_id or not client_secret:
+            raise ValueError("Spotify Client ID o Secret no están definidos")
+
         auth_response = requests.post(
             'https://accounts.spotify.com/api/token',
+            headers={
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
             data={
                 'grant_type': 'client_credentials',
-                'client_id': SPOTIPY_CLIENT_ID,
-                'client_secret': SPOTIPY_CLIENT_SECRET
+                'client_id': client_id,
+                'client_secret': client_secret
             }
         )
         auth_response.raise_for_status()
@@ -150,6 +170,11 @@ def authenticate_spotify():
     except requests.RequestException as e:
         print(f"Error en la autenticación de Spotify: {e}")
         raise
+    except ValueError as ve:
+        print(f"Error de configuración: {ve}")
+        raise
+
+
 
 def buscar_canciones_spotify(access_token, danceability, energy, acousticness, valence, tempo):
     try:
@@ -186,7 +211,7 @@ def buscar_en_deezer(nombre_cancion, artista):
 
 
 @method_decorator(csrf_exempt, name="dispatch")
-class buscar_canciones_deezer(View):
+class uscar_canciones_deezer(View):
 
     def post(self, request, *args, **kwargs):
 
@@ -205,6 +230,7 @@ class buscar_canciones_deezer(View):
 
             if caracteristicas_emocion is None:
                 return JsonResponse({"error": "No se encontraron características para la emoción o intención proporcionada."}, status=400)
+       
 
         access_token = authenticate_spotify()
         resultados = buscar_canciones_spotify(access_token, *caracteristicas_emocion)
@@ -221,4 +247,3 @@ class buscar_canciones_deezer(View):
             })
 
         return JsonResponse({"resultados": resultados_deezer}, status=200)
-

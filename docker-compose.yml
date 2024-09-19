@@ -31,6 +31,7 @@ services:
     networks:
       - mynetwork
     environment:
+       
       - DATABASE_URL=postgres://myuser:mypassword@db:5432/mydatabase
       - POSTGRES_DB=mydatabase
       - POSTGRES_USER=myuser
@@ -39,6 +40,15 @@ services:
       - ADMIN_PASSWORD=secure_password
       - ADMIN_EMAIL=admin@gmail.com
       - JWT_SECRET_KEY=h[&?T4}!nT5y+dX.vZ}E-Zg@Nfe&vnwXb&2X8M.Z054_j?[EE3qxd2F}B-i;wpHNF)1iFA-5*{@qc7.4ya3-$SiHL02k$eQqJ+,Zg2yZ8!y&qtdj+eA,=_YCvvhGXE*Enf)gtzcQC{.D&pB?YW1g(a?N2f/Dy+t;V?iTJE}7WnvS4QP$@_e0T]v@Nvq.wYW5AVC.._#2
+      - SPOTIPY_CLIENT_ID=${SPOTIPY_CLIENT_ID}
+      - SPOTIPY_CLIENT_SECRET=${SPOTIPY_CLIENT_SECRET}
+      - SPOTIPY_REDIRECT_URI=${SPOTIPY_REDIRECT_URI}
+
+     
+    env_file:
+        - ./server/app/ia/api_flask/.env
+
+
 
   client:
     build:
@@ -54,3 +64,6 @@ networks:
 
 volumes:
   postgres_data:
+   
+
+

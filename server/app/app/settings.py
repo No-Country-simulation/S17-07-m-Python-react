@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 import datetime
+
+
 AUTH_USER_MODEL = 'users.Users'
 CORS_ALLOW_ALL_ORIGINS = True
 
