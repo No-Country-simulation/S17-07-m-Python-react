@@ -12,11 +12,14 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from users.utils.decorators import jwt_required
 from sklearn.feature_extraction.text import TfidfVectorizer
+import base64
+
 
 # Configura las credenciales de la API de Spotify desde variables de entorno
-SPOTIPY_CLIENT_ID = os.getenv('SPOTIPY_CLIENT_ID')
-SPOTIPY_CLIENT_SECRET = os.getenv('SPOTIPY_CLIENT_SECRET')
-SPOTIPY_REDIRECT_URI = os.getenv('SPOTIPY_REDIRECT_URI')
+SPOTIPY_CLIENT_ID = os.environ.get('SPOTIPY_CLIENT_ID')
+SPOTIPY_CLIENT_SECRET = os.environ.get('SPOTIPY_CLIENT_SECRET')
+
+
 
 # Carga el modelo entrenado
 def cargar_modelo():
@@ -136,19 +139,34 @@ def extraer_intencion(texto):
 
 def authenticate_spotify():
     try:
+        # Codificar client_id y client_secret en Base64
+        auth_str = f"{SPOTIPY_CLIENT_ID}:{SPOTIPY_CLIENT_SECRET}"
+        encoded_auth_str = base64.b64encode(auth_str.encode()).decode()
+
+        # Enviar solicitud POST para obtener el token
         auth_response = requests.post(
             'https://accounts.spotify.com/api/token',
             data={
-                'grant_type': 'client_credentials',
-                'client_id': SPOTIPY_CLIENT_ID,
-                'client_secret': SPOTIPY_CLIENT_SECRET
+                'grant_type': 'client_credentials'
+            },
+            headers={
+                'Authorization': f'Basic {encoded_auth_str}'
             }
         )
+        
+        # Asegurarse de que la solicitud fue exitosa
         auth_response.raise_for_status()
+
+        # Procesar la respuesta JSON
         auth_response_data = auth_response.json()
+        
+        # Devolver el token de acceso
         return auth_response_data['access_token']
+    
     except requests.RequestException as e:
         print(f"Error en la autenticación de Spotify: {e}")
+        if e.response is not None:
+            print(f"Respuesta de error: {e.response.text}")
         raise
 
 def buscar_canciones_spotify(access_token, danceability, energy, acousticness, valence, tempo):
