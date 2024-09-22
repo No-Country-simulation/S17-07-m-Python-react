@@ -3,6 +3,7 @@ import axios from 'axios';
 import { getEnvVariables } from '../../../../../../core/utils/getEnvVariables';
 
 const { VITE_API_MUSIC } = getEnvVariables();
+const { VITE_API_URL } = getEnvVariables();
 export const MusicPlayerContext = createContext();
 
 export const MusicPlayerProvider = ({ children }) => {
@@ -18,18 +19,18 @@ export const MusicPlayerProvider = ({ children }) => {
       try {
         let url = '';
         let isPlaylistOrAlbum = false;
-
+        const token = localStorage.getItem('token');
         switch (type) {
           case 'playlist':
             url = `${VITE_API_MUSIC}/playlist/${trackId}`;
             isPlaylistOrAlbum = true;
             break;
           case 'album':
-            url = `${VITE_API_MUSIC}/album/${trackId}`;
+            url = `${VITE_API_URL}/album/${trackId}`;
             isPlaylistOrAlbum = true;
             break;
           case 'track':
-            url = `${VITE_API_MUSIC}/track/${trackId}`;
+            url = `${VITE_API_URL}/track/${trackId}`;
             break;
           case 'my-playlist':
             if (myPlaylistData) {
@@ -40,7 +41,11 @@ export const MusicPlayerProvider = ({ children }) => {
             throw new Error('Invalid type');
         }
 
-        const response = await axios.get(url);
+        const response = await axios.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        });
 
         if (isPlaylistOrAlbum) {
           const tracks = response.data?.tracks?.data;
