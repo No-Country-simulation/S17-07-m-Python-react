@@ -64,3 +64,31 @@ class GetElementById(View):
             }, status=200)
         else:
             return JsonResponse(status=response.status_code)
+        
+        
+        
+@method_decorator(csrf_exempt, name="dispatch")
+class GetCharts(View):
+    
+    @jwt_required
+    def get(self, request, *args, **kwargs):
+        limit = request.GET.get('limit', None)
+
+        if not limit:
+            return JsonResponse({"error":"limit required"}, status=400)
+
+        url = f"https://api.deezer.com/chart/0&limit={limit}"
+        response = requests.get(url)
+        if response.status_code == 200:
+            data = response.json()
+            print(data)
+            if 'error' in data:
+                return JsonResponse({"error":data['error']['message']}, status=400)
+            if "tracks" in data:
+                songs = data["tracks"]
+                for song in songs["data"]:
+                    song["favorite"] = Favorite.objects.filter(user=request.user, element_id=song["id"]).exists()
+                return JsonResponse({
+                    'tracks': songs
+                }, status=200)
+        return JsonResponse(status=400)
