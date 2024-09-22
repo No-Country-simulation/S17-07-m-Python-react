@@ -81,7 +81,7 @@ class GetCharts(View):
         response = requests.get(url)
         if response.status_code == 200:
             data = response.json()
-            print(data)
+
             if 'error' in data:
                 return JsonResponse({"error":data['error']['message']}, status=400)
             if "tracks" in data:
@@ -89,6 +89,7 @@ class GetCharts(View):
                 for song in songs["data"]:
                     song["favorite"] = Favorite.objects.filter(user=request.user, element_id=song["id"]).exists()
                 return JsonResponse({
-                    'tracks': songs
+                    'tracks': songs,
+                    "artists": data["artists"]
                 }, status=200)
         return JsonResponse(status=400)
