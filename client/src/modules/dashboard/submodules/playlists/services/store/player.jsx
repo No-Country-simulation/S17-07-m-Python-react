@@ -26,11 +26,11 @@ export const MusicPlayerProvider = ({ children }) => {
             isPlaylistOrAlbum = true;
             break;
           case 'album':
-            url = `${VITE_API_URL}/album/${trackId}`;
+            url = `${VITE_API_URL}/search/category/album/${trackId}`;
             isPlaylistOrAlbum = true;
             break;
           case 'track':
-            url = `${VITE_API_URL}/track/${trackId}`;
+            url = `${VITE_API_URL}/search/category/track/${trackId}`;
             break;
           case 'my-playlist':
             if (myPlaylistData) {
@@ -48,14 +48,14 @@ export const MusicPlayerProvider = ({ children }) => {
         });
 
         if (isPlaylistOrAlbum) {
-          const tracks = response.data?.tracks?.data;
+          const tracks = response.data.data?.tracks?.data;
           if (tracks && tracks.length > 0) {
             setPlaylistData(tracks);
             setCurrentTrackIndex(0);
             setTrackData(null);
           }
         } else {
-          setTrackData(response.data);
+          setTrackData(response.data.data);
           setPlaylistData(null);
         }
       } catch (error) {
