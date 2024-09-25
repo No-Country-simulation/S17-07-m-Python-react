@@ -93,11 +93,16 @@ export const MusicPlayerProvider = ({ children }) => {
 
   const addToMyPlaylist = async (trackIds) => {
     try {
+      const token = localStorage.getItem('token');
       const trackDetailsPromises = trackIds.map((id) =>
-        axios.get(`${VITE_API_MUSIC}/track/${id}`),
+        axios.get(`${VITE_API_URL}/search/category/track/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          }
+        }),
       );
       const tracks = await Promise.all(trackDetailsPromises);
-      setMyPlaylistData(tracks.map((response) => response.data));
+      setMyPlaylistData(tracks.map((response) => response.data.data));
       setType('my-playlist');
       setTrackData(null);
       setCurrentTrackIndex(0);
